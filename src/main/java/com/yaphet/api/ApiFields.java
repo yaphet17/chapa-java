@@ -20,7 +20,7 @@ public class ApiFields{
     @NotNull(message = "amount field required")
     @DecimalMin(value = "1.00", message = "amount can't be less than 1")
     private BigDecimal amount;
-    @NotNull(message = "amount field required")
+    @NotNull(message = "currency field required")
     private String currency;
     @NotNull(message = "first_name field required")
     private String first_name;
