@@ -31,4 +31,5 @@ public class ApiFields{
     private String callback_url;
     private String customization_title;
     private String customization_description;
+    private String customization_logo;
 }

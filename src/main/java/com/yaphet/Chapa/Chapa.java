@@ -4,15 +4,18 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.apache.http.HttpHeaders;
 
 import java.util.Map;
 
 public class Chapa {
 
     private static HttpResponse<JsonNode> response;
+    private static final String authorizationHeader = HttpHeaders.AUTHORIZATION;
+    private static final String acceptEncodingHeader = HttpHeaders.ACCEPT_ENCODING;
     private static String responseBody;
-    private final String SECRETE_KEY;
     private final String BASE_URL = "https://api.chapa.co/v1/transaction";
+    private final String SECRETE_KEY;
 
     public Chapa(String secreteKey){
         this.SECRETE_KEY = secreteKey;
@@ -23,8 +26,8 @@ public class Chapa {
         FieldValidator.validateFields(apiFields);
 
         response = Unirest.post(BASE_URL + "/initialize")
-                .header("Accept-Encoding","application/json")
-                .header("Authorization", "Bearer " + SECRETE_KEY)
+                .header(acceptEncodingHeader,"application/json")
+                .header(authorizationHeader, "Bearer " + SECRETE_KEY)
                 .field( "amount", apiFields.getAmount().toString())
                 .field( "currency", apiFields.getCurrency())
                 .field("first_name", apiFields.getFirst_name())
@@ -43,8 +46,8 @@ public class Chapa {
         FieldValidator.validateFields(jsonData);
 
         response = Unirest.post(BASE_URL + "/initialize")
-                .header("Accept-Encoding","application/json")
-                .header("Authorization", "Bearer " + SECRETE_KEY)
+                .header(acceptEncodingHeader,"application/json")
+                .header(authorizationHeader, "Bearer " + SECRETE_KEY)
                 .body(jsonData)
                 .asJson();
         responseBody = response.getBody().toString();
@@ -53,8 +56,8 @@ public class Chapa {
 
     public Chapa verify(String transactionRef) throws UnirestException {
         response = Unirest.get(BASE_URL + "/verify/" + transactionRef)
-                .header("Accept-Encoding","application/json")
-                .header("Authorization", "Bearer " + SECRETE_KEY)
+                .header(acceptEncodingHeader,"application/json")
+                .header(authorizationHeader, "Bearer " + SECRETE_KEY)
                 .asJson();
         responseBody = response.getBody().toString();
         return this;
