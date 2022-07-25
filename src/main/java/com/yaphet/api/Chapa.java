@@ -20,7 +20,6 @@ public class Chapa {
 
     public String initialize(ApiFields apiFields) throws UnirestException {
         validateFields(apiFields);
-        Gson gson = new Gson();
 
         HttpResponse<JsonNode> response = Unirest.post("https://api.chapa.co/v1/transaction/initialize")
                 .header("Accept-Encoding","application/json")
