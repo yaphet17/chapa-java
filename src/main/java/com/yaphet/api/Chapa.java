@@ -1,29 +1,26 @@
 package com.yaphet.api;
 
-import com.google.gson.Gson;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
-import javax.validation.*;
-import java.util.Map;
-import java.util.Set;
-
 public class Chapa {
 
-    private final String secreteKey;
+    private static HttpResponse<JsonNode> response;
+    private final String SECRETE_KEY;
+
     public Chapa(String secreteKey){
-        this.secreteKey = secreteKey;
+        this.SECRETE_KEY = secreteKey;
     }
 
 
     public String initialize(ApiFields apiFields) throws UnirestException {
-        validateFields(apiFields);
+        FieldValidator.validateFields(apiFields);
 
-        HttpResponse<JsonNode> response = Unirest.post("https://api.chapa.co/v1/transaction/initialize")
+        response = Unirest.post("https://api.chapa.co/v1/transaction/initialize")
                 .header("Accept-Encoding","application/json")
-                .header("Authorization", "Bearer " + secreteKey)
+                .header("Authorization", "Bearer " + SECRETE_KEY)
                 .field( "amount", apiFields.getAmount().toString())
                 .field( "currency", apiFields.getCurrency())
                 .field("first_name", apiFields.getFirst_name())
@@ -38,28 +35,14 @@ public class Chapa {
     }
 
     public String initialize(String jsonData) throws UnirestException {
+        FieldValidator.validateFields(jsonData);
 
-        HttpResponse<JsonNode> response = Unirest.post("https://api.chapa.co/v1/transaction/initialize")
+        response = Unirest.post("https://api.chapa.co/v1/transaction/initialize")
                 .header("Accept-Encoding","application/json")
-                .header("Authorization", "Bearer " + secreteKey)
+                .header("Authorization", "Bearer " + SECRETE_KEY)
                 .body(jsonData)
                 .asJson();
         return response.getBody().toString();
     }
 
-    private void validateFields(ApiFields apiFields) {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
-        Set<ConstraintViolation<ApiFields>> violations = validator.validate(apiFields);
-
-        if(!violations.isEmpty()){
-            StringBuilder errorMsg = new StringBuilder();
-            for (ConstraintViolation<ApiFields> violation : violations) {
-                errorMsg.append(violation.getMessage() + ", ");
-
-            }
-            throw new ValidationException(errorMsg.toString());
-        }
-
-    }
 }
