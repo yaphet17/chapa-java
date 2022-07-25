@@ -1,4 +1,4 @@
-package com.yaphet.api;
+package com.yaphet.Chapa;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
@@ -12,6 +12,7 @@ public class Chapa {
     private static HttpResponse<JsonNode> response;
     private static String responseBody;
     private final String SECRETE_KEY;
+    private final String BASE_URL = "https://api.chapa.co/v1/transaction";
 
     public Chapa(String secreteKey){
         this.SECRETE_KEY = secreteKey;
@@ -21,7 +22,7 @@ public class Chapa {
     public Chapa initialize(ApiFields apiFields) throws UnirestException {
         FieldValidator.validateFields(apiFields);
 
-        response = Unirest.post("https://api.chapa.co/v1/transaction/initialize")
+        response = Unirest.post(BASE_URL + "/initialize")
                 .header("Accept-Encoding","application/json")
                 .header("Authorization", "Bearer " + SECRETE_KEY)
                 .field( "amount", apiFields.getAmount().toString())
@@ -41,10 +42,19 @@ public class Chapa {
     public Chapa initialize(String jsonData) throws UnirestException {
         FieldValidator.validateFields(jsonData);
 
-        response = Unirest.post("https://api.chapa.co/v1/transaction/initialize")
+        response = Unirest.post(BASE_URL + "/initialize")
                 .header("Accept-Encoding","application/json")
                 .header("Authorization", "Bearer " + SECRETE_KEY)
                 .body(jsonData)
+                .asJson();
+        responseBody = response.getBody().toString();
+        return this;
+    }
+
+    public Chapa verify(String transactionRef) throws UnirestException {
+        response = Unirest.get(BASE_URL + "/verify/" + transactionRef)
+                .header("Accept-Encoding","application/json")
+                .header("Authorization", "Bearer " + SECRETE_KEY)
                 .asJson();
         responseBody = response.getBody().toString();
         return this;

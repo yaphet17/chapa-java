@@ -1,4 +1,4 @@
-package com.yaphet.api;
+package com.yaphet.Chapa;
 
 import lombok.Builder;
 import lombok.Getter;
