@@ -37,8 +37,7 @@ public class FieldValidator {
     }
 
     private static ApiFields mapJsonToApiField(String jsonData) {
-        Gson gson = new Gson();
-        Map<String, String> newMap = gson.fromJson(jsonData, Map.class);
+        Map<String, String> newMap = jsonToMap(jsonData);
         return ApiFields.builder()
                 .amount(new BigDecimal(newMap.get("amount")))
                 .currency(newMap.get("currency"))
@@ -50,5 +49,8 @@ public class FieldValidator {
                 .customization_title(newMap.get("customization_title"))
                 .customization_description(newMap.get("customization_description"))
                 .build();
+    }
+    public static Map<String, String> jsonToMap(String jsonData){
+        return new Gson().fromJson(jsonData, Map.class);
     }
 }

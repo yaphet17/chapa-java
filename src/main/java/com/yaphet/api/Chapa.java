@@ -5,9 +5,12 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
+import java.util.Map;
+
 public class Chapa {
 
     private static HttpResponse<JsonNode> response;
+    private static String responseBody;
     private final String SECRETE_KEY;
 
     public Chapa(String secreteKey){
@@ -15,7 +18,7 @@ public class Chapa {
     }
 
 
-    public String initialize(ApiFields apiFields) throws UnirestException {
+    public Chapa initialize(ApiFields apiFields) throws UnirestException {
         FieldValidator.validateFields(apiFields);
 
         response = Unirest.post("https://api.chapa.co/v1/transaction/initialize")
@@ -31,10 +34,11 @@ public class Chapa {
                 .field("customization[description]", apiFields.getCustomization_description())
                 .asJson();
 
-        return response.getBody().toString();
+        responseBody = response.getBody().toString();
+        return this;
     }
 
-    public String initialize(String jsonData) throws UnirestException {
+    public Chapa initialize(String jsonData) throws UnirestException {
         FieldValidator.validateFields(jsonData);
 
         response = Unirest.post("https://api.chapa.co/v1/transaction/initialize")
@@ -42,7 +46,16 @@ public class Chapa {
                 .header("Authorization", "Bearer " + SECRETE_KEY)
                 .body(jsonData)
                 .asJson();
-        return response.getBody().toString();
+        responseBody = response.getBody().toString();
+        return this;
+    }
+
+    public String asString(){
+        return responseBody;
+    }
+
+    public Map<String, String> asMap(){
+        return FieldValidator.jsonToMap(responseBody);
     }
 
 }

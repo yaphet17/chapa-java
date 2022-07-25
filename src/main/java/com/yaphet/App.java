@@ -25,6 +25,6 @@ public class App
                 .customization_description("It is time to pay")
                 .build();
         Chapa chapa = new Chapa(secreteKey);
-        System.out.println(chapa.initialize(fields));
+        System.out.println(chapa.initialize(fields).asString());
     }
 }
