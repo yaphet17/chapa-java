@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Set;
 
-public class FieldValidator {
+public class Util {
     private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory().getValidator();
 
 

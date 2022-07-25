@@ -23,7 +23,7 @@ public class Chapa {
 
 
     public Chapa initialize(ApiFields apiFields) throws UnirestException {
-        FieldValidator.validateFields(apiFields);
+        Util.validateFields(apiFields);
 
         response = Unirest.post(BASE_URL + "/initialize")
                 .header(acceptEncodingHeader,"application/json")
@@ -43,7 +43,7 @@ public class Chapa {
     }
 
     public Chapa initialize(String jsonData) throws UnirestException {
-        FieldValidator.validateFields(jsonData);
+        Util.validateFields(jsonData);
 
         response = Unirest.post(BASE_URL + "/initialize")
                 .header(acceptEncodingHeader,"application/json")
@@ -68,7 +68,7 @@ public class Chapa {
     }
 
     public Map<String, String> asMap(){
-        return FieldValidator.jsonToMap(responseBody);
+        return Util.jsonToMap(responseBody);
     }
 
 }
