@@ -1,4 +1,4 @@
-package com.yaphet.Chapa;
+package com.yaphet.chapa;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
@@ -30,9 +30,9 @@ public class Chapa {
                 .header(authorizationHeader, "Bearer " + SECRETE_KEY)
                 .field( "amount", apiFields.getAmount().toString())
                 .field( "currency", apiFields.getCurrency())
+                .field("email", apiFields.getEmail())
                 .field("first_name", apiFields.getFirst_name())
                 .field("last_name", apiFields.getLast_name())
-                .field("email", apiFields.getEmail())
                 .field("tx_ref", apiFields.getTx_ref())
                 .field("customization[title]",  apiFields.getCustomization_title())
                 .field("customization[description]", apiFields.getCustomization_description())

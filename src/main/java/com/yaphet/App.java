@@ -1,8 +1,8 @@
 package com.yaphet;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
-import com.yaphet.Chapa.ApiFields;
-import com.yaphet.Chapa.Chapa;
+import com.yaphet.chapa.ApiFields;
+import com.yaphet.chapa.Chapa;
 import io.github.cdimascio.dotenv.Dotenv;
 
 import java.math.BigDecimal;

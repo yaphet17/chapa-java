@@ -1,4 +1,4 @@
-package com.yaphet.Chapa;
+package com.yaphet.chapa;
 
 import com.google.gson.Gson;
 
@@ -41,9 +41,9 @@ public class Util {
         return ApiFields.builder()
                 .amount(new BigDecimal(newMap.get("amount")))
                 .currency(newMap.get("currency"))
+                .email(newMap.get("email"))
                 .first_name(newMap.get("first_name"))
                 .last_name(newMap.get("last_name"))
-                .email(newMap.get("email"))
                 .tx_ref(newMap.get("tx_ref"))
                 .callback_url(newMap.get("callback_url"))
                 .customization_title(newMap.get("customization_title"))
