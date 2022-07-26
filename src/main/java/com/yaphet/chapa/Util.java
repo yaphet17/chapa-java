@@ -45,7 +45,6 @@ public class Util {
             StringBuilder errorMsg = new StringBuilder();
             for (ConstraintViolation<PostData> violation : violations) {
                 errorMsg.append(violation.getMessage()).append(", ");
-
             }
             throw new ValidationException(errorMsg.toString());
         }
@@ -70,6 +69,12 @@ public class Util {
                 .customization_description(newMap.get("customization_description"))
                 .build();
     }
+
+    /**
+     *
+     * @param jsonData  json data to be mapped to PostData object
+     * @return          a Map object which contains fields from json data
+     */
     public static Map<String, String> jsonToMap(String jsonData){
         return new Gson().fromJson(jsonData, Map.class);
     }
