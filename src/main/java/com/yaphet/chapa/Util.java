@@ -15,20 +15,20 @@ public class Util {
 
 
 
-    public static void validateFields(ApiFields apiFields) {
-        validate(apiFields);
+    public static void validatePostData(PostData postData) {
+        validate(postData);
     }
-    public static void validateFields(String jsonData) {
-        ApiFields apiFields = mapJsonToApiField(jsonData);
-        validate(apiFields);
+    public static void validatePostData(String jsonData) {
+        PostData postData = mapJsonToPostData(jsonData);
+        validate(postData);
     }
 
-    private static void validate(ApiFields apiFields) {
-        Set<ConstraintViolation<ApiFields>> violations = VALIDATOR.validate(apiFields);
+    private static void validate(PostData postData) {
+        Set<ConstraintViolation<PostData>> violations = VALIDATOR.validate(postData);
 
         if(!violations.isEmpty()){
             StringBuilder errorMsg = new StringBuilder();
-            for (ConstraintViolation<ApiFields> violation : violations) {
+            for (ConstraintViolation<PostData> violation : violations) {
                 errorMsg.append(violation.getMessage()).append(", ");
 
             }
@@ -36,9 +36,9 @@ public class Util {
         }
     }
 
-    private static ApiFields mapJsonToApiField(String jsonData) {
+    private static PostData mapJsonToPostData(String jsonData) {
         Map<String, String> newMap = jsonToMap(jsonData);
-        return ApiFields.builder()
+        return PostData.builder()
                 .amount(new BigDecimal(newMap.get("amount")))
                 .currency(newMap.get("currency"))
                 .email(newMap.get("email"))

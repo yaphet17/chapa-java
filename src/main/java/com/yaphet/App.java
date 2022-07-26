@@ -1,7 +1,7 @@
 package com.yaphet;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
-import com.yaphet.chapa.ApiFields;
+import com.yaphet.chapa.PostData;
 import com.yaphet.chapa.Chapa;
 import io.github.cdimascio.dotenv.Dotenv;
 
@@ -16,7 +16,7 @@ public class App
 
         String transactionRef= "transaction-" + new Date();
 
-        ApiFields fields = ApiFields.builder()
+        PostData data = PostData.builder()
                 .amount(new BigDecimal("100"))
                 .currency( "ETB")
                 .first_name("Yafet")
@@ -30,7 +30,7 @@ public class App
                 .build();
 
         Chapa chapa = new Chapa(secreteKey);
-        System.out.println(chapa.initialize(fields).asString());
+        System.out.println(chapa.initialize(data).asString());
 //        System.out.println(chapa.verify(transactionRef).asMap());
     }
 }

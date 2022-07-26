@@ -22,20 +22,20 @@ public class Chapa {
     }
 
 
-    public Chapa initialize(ApiFields apiFields) throws UnirestException {
-        Util.validateFields(apiFields);
+    public Chapa initialize(PostData postData) throws UnirestException {
+        Util.validatePostData(postData);
 
         response = Unirest.post(BASE_URL + "/initialize")
                 .header(acceptEncodingHeader,"application/json")
                 .header(authorizationHeader, "Bearer " + SECRETE_KEY)
-                .field( "amount", apiFields.getAmount().toString())
-                .field( "currency", apiFields.getCurrency())
-                .field("email", apiFields.getEmail())
-                .field("first_name", apiFields.getFirst_name())
-                .field("last_name", apiFields.getLast_name())
-                .field("tx_ref", apiFields.getTx_ref())
-                .field("customization[title]",  apiFields.getCustomization_title())
-                .field("customization[description]", apiFields.getCustomization_description())
+                .field( "amount", postData.getAmount().toString())
+                .field( "currency", postData.getCurrency())
+                .field("email", postData.getEmail())
+                .field("first_name", postData.getFirst_name())
+                .field("last_name", postData.getLast_name())
+                .field("tx_ref", postData.getTx_ref())
+                .field("customization[title]",  postData.getCustomization_title())
+                .field("customization[description]", postData.getCustomization_description())
                 .asJson();
 
         responseBody = response.getBody().toString();
@@ -43,7 +43,7 @@ public class Chapa {
     }
 
     public Chapa initialize(String jsonData) throws UnirestException {
-        Util.validateFields(jsonData);
+        Util.validatePostData(jsonData);
 
         response = Unirest.post(BASE_URL + "/initialize")
                 .header(acceptEncodingHeader,"application/json")

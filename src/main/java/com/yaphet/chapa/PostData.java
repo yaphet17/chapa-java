@@ -7,13 +7,12 @@ import lombok.Setter;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 
 @Getter
 @Setter
 @Builder
-public class ApiFields{
+public class PostData {
 
     @NotNull(message = "The amount field is required")
     @DecimalMin(value = "0.01", message = "Invalid amount")
