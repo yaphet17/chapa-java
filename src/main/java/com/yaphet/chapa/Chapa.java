@@ -30,21 +30,25 @@ public class Chapa {
      * @param postData  object of PostData instantiated with post fields
      * @return          returns the reference of the invoking object
      */
-    public Chapa initialize(PostData postData) throws UnirestException {
+    public Chapa initialize(PostData postData) {
         Util.validatePostData(postData);
 
-        response = Unirest.post(BASE_URL + "/transaction/initialize")
-                .header(acceptEncodingHeader,"application/json")
-                .header(authorizationHeader, "Bearer " + SECRETE_KEY)
-                .field( "amount", postData.getAmount().toString())
-                .field( "currency", postData.getCurrency())
-                .field("email", postData.getEmail())
-                .field("first_name", postData.getFirst_name())
-                .field("last_name", postData.getLast_name())
-                .field("tx_ref", postData.getTx_ref())
-                .field("customization[title]",  postData.getCustomization_title())
-                .field("customization[description]", postData.getCustomization_description())
-                .asJson();
+        try {
+            response = Unirest.post(BASE_URL + "/transaction/initialize")
+                    .header(acceptEncodingHeader,"application/json")
+                    .header(authorizationHeader, "Bearer " + SECRETE_KEY)
+                    .field( "amount", postData.getAmount().toString())
+                    .field( "currency", postData.getCurrency())
+                    .field("email", postData.getEmail())
+                    .field("first_name", postData.getFirst_name())
+                    .field("last_name", postData.getLast_name())
+                    .field("tx_ref", postData.getTx_ref())
+                    .field("customization[title]",  postData.getCustomization_title())
+                    .field("customization[description]", postData.getCustomization_description())
+                    .asJson();
+        } catch (UnirestException e) {
+            throw new RuntimeException(e);
+        }
 
         responseBody = response.getBody().toString();
         return this;
@@ -73,11 +77,15 @@ public class Chapa {
      * @param transactionRef   unique transaction reference which was associated with tx_ref in post data
      * @return                 returns the reference of the invoking object
      */
-    public Chapa verify(String transactionRef) throws UnirestException {
-        response = Unirest.get(BASE_URL + "/transaction/verify/" + transactionRef)
-                .header(acceptEncodingHeader,"application/json")
-                .header(authorizationHeader, "Bearer " + SECRETE_KEY)
-                .asJson();
+    public Chapa verify(String transactionRef) {
+        try {
+            response = Unirest.get(BASE_URL + "/transaction/verify/" + transactionRef)
+                    .header(acceptEncodingHeader,"application/json")
+                    .header(authorizationHeader, "Bearer " + SECRETE_KEY)
+                    .asJson();
+        } catch (UnirestException e) {
+            throw new RuntimeException(e);
+        }
         responseBody = response.getBody().toString();
         return this;
     }
