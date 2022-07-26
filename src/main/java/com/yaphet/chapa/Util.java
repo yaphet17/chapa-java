@@ -10,19 +10,34 @@ import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * The Util class serves as a helper class for Chapa
+ */
 public class Util {
+
     private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory().getValidator();
 
-
-
+    /**
+     *
+     * @param postData  instance of PostData class to be validated
+     */
     public static void validatePostData(PostData postData) {
         validate(postData);
     }
+
+    /**
+     *
+     * @param jsonData  json data to be validated
+     */
     public static void validatePostData(String jsonData) {
         PostData postData = mapJsonToPostData(jsonData);
         validate(postData);
     }
 
+    /**
+     *
+      * @param postData instance of PostData class to be validated
+     */
     private static void validate(PostData postData) {
         Set<ConstraintViolation<PostData>> violations = VALIDATOR.validate(postData);
 
@@ -36,6 +51,11 @@ public class Util {
         }
     }
 
+    /**
+     *
+     * @param jsonData  json data to be mapped to PostData object
+     * @return          instance PostData which contains fields from json data
+     */
     private static PostData mapJsonToPostData(String jsonData) {
         Map<String, String> newMap = jsonToMap(jsonData);
         return PostData.builder()
