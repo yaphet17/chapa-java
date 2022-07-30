@@ -10,7 +10,7 @@ import java.util.Map;
 
 /**
  * The Chapa class is responsible for making GET and POST request to Chapa API
- * to initialize payment and verify transactions
+ * to initialize payment and verify transactions.
  */
 public class Chapa {
 
@@ -27,8 +27,9 @@ public class Chapa {
 
     /**
      *
-     * @param postData  object of PostData instantiated with post fields
-     * @return          returns the reference of the invoking object
+     * @param postData  object of {@link com.yaphet.chapa.PostData} instantiated with
+     *                  post fields.
+     * @return          the current invoking object.
      */
     public Chapa initialize(PostData postData) {
         Util.validatePostData(postData);
@@ -56,8 +57,8 @@ public class Chapa {
 
     /**
      *
-     * @param jsonData  json data which contains post fields
-     * @return          returns the reference of the invoking object
+     * @param jsonData  JSON data which contains post fields.
+     * @return          the current invoking object.
      */
 
     public Chapa initialize(String jsonData) throws UnirestException {
@@ -74,8 +75,9 @@ public class Chapa {
 
     /**
      *
-     * @param transactionRef   unique transaction reference which was associated with tx_ref in post data
-     * @return                 returns the reference of the invoking object
+     * @param transactionRef   unique transaction reference which was associated
+     *                         with tx_ref field in post data.
+     * @return                 the current invoking object.
      */
     public Chapa verify(String transactionRef) {
         try {
@@ -92,7 +94,7 @@ public class Chapa {
 
     /**
      *
-     * @return  string representation of json data
+     * @return  String representation of the response JSON data.
      */
     public String asString(){
         return responseBody;
@@ -100,7 +102,7 @@ public class Chapa {
 
     /**
      *
-     * @return  map representation of json data
+     * @return  Map<String, String> representation of the response JSON data.
      */
     public Map<String, String> asMap(){
         return Util.jsonToMap(responseBody);

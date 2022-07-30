@@ -6,15 +6,30 @@
 
     <groupId>com.yaphet</groupId>
     <artifactId>Chapa</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
+    <packaging>jar</packaging>
+
     <name>Chapa</name>
+    <url>http://github.com/yaphet17/chapa-java</url>
     <developers>
         <developer>
-            <id>yaphet17</id>
             <name>Yafet Berhanu</name>
             <email>yafetberhanu3@gmail.com</email>
         </developer>
     </developers>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:git://github.com/yaphet17/chapa-java.git</connection>
+        <developerConnection>scm:git:ssh://github.com:yaphet17/chapa-java.git</developerConnection>
+        <url>http://github.com/yapht17/chapa-java/tree/main</url>
+    </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

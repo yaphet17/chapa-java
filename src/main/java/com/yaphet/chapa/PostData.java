@@ -10,8 +10,8 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 /**
- * The PostData class is an object representation of json form data
- * that will be posted to Chapa API
+ * The PostData class is an object representation of JSON form data
+ * that will be posted to Chapa API.
  */
 @Getter
 @Setter

@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * The Util class serves as a helper class for Chapa
+ * The Util class serves as a helper class for the main {@link com.yaphet.chapa.Chapa} class.
  */
 public class Util {
 
@@ -19,7 +19,8 @@ public class Util {
 
     /**
      *
-     * @param postData  instance of PostData class to be validated
+     * @param postData  instance of PostData class that contains post
+     *                  fields to be validated.
      */
     public static void validatePostData(PostData postData) {
         validate(postData);
@@ -27,7 +28,7 @@ public class Util {
 
     /**
      *
-     * @param jsonData  json data to be validated
+     * @param jsonData  JSON data that contains post fields to be validated.
      */
     public static void validatePostData(String jsonData) {
         PostData postData = mapJsonToPostData(jsonData);
@@ -36,7 +37,8 @@ public class Util {
 
     /**
      *
-      * @param postData instance of PostData class to be validated
+     * @param postData instance of PostData class that contains post
+     *                 fields to be validated.
      */
     private static void validate(PostData postData) {
         Set<ConstraintViolation<PostData>> violations = VALIDATOR.validate(postData);
@@ -52,8 +54,10 @@ public class Util {
 
     /**
      *
-     * @param jsonData  json data to be mapped to PostData object
-     * @return          instance PostData which contains fields from json data
+     * @param jsonData  JSON data that contains post fields to be mapped
+     *                  to PostData object.
+     * @return          a PostData object which contains post fields of the
+     *                  provided JSON data.
      */
     private static PostData mapJsonToPostData(String jsonData) {
         Map<String, String> newMap = jsonToMap(jsonData);
@@ -72,8 +76,9 @@ public class Util {
 
     /**
      *
-     * @param jsonData  json data to be mapped to PostData object
-     * @return          a Map object which contains fields from json data
+     * @param jsonData  JSON data to be mapped to Map<String, String> object.
+     * @return          a Map object which contains post fields of the provided
+     *                  JSON data.
      */
     public static Map<String, String> jsonToMap(String jsonData){
         return new Gson().fromJson(jsonData, Map.class);
