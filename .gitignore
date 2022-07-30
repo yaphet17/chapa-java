@@ -1,4 +1,5 @@
 HELP.md
+pom.xml.versionsBackup
 target/
 logs/
 !.mvn/wrapper/maven-wrapper.jar
