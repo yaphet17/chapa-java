@@ -76,7 +76,7 @@ public class Util {
 
     /**
      *
-     * @param jsonData  JSON data to be mapped to Map<String, String> object.
+     * @param jsonData  JSON data to be mapped to Map object.
      * @return          a Map object which contains post fields of the provided
      *                  JSON data.
      */

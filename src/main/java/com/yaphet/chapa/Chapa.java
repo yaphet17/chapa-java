@@ -21,6 +21,10 @@ public class Chapa {
     private final String BASE_URL = "https://api.chapa.co/v1";
     private final String SECRETE_KEY;
 
+    /**
+     *
+     * @param secreteKey    A secrete key provided from Chapa.
+     */
     public Chapa(String secreteKey){
         this.SECRETE_KEY = secreteKey;
     }
@@ -59,6 +63,8 @@ public class Chapa {
      *
      * @param jsonData  JSON data which contains post fields.
      * @return          the current invoking object.
+     * @throws          UnirestException if a post request to Chapa API
+     *                  fails for any reason.
      */
 
     public Chapa initialize(String jsonData) throws UnirestException {
@@ -102,7 +108,7 @@ public class Chapa {
 
     /**
      *
-     * @return  Map<String, String> representation of the response JSON data.
+     * @return  Map representation of the response JSON data.
      */
     public Map<String, String> asMap(){
         return Util.jsonToMap(responseBody);
