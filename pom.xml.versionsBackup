@@ -6,11 +6,10 @@
 
     <groupId>io.github.yaphet17</groupId>
     <artifactId>Chapa</artifactId>
-    <version>1.0.0</version>
+    <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Chapa</name>
-    <description>Publish open source library for Chapa payment gateway with OSSRH</description>
     <url>http://github.com/yaphet17/chapa-java</url>
     <developers>
         <developer>
