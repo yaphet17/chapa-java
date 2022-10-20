@@ -7,8 +7,13 @@ import javax.validation.Validation;
 import javax.validation.ValidationException;
 import javax.validation.Validator;
 import java.math.BigDecimal;
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * The Util class serves as a helper class for the main {@link com.yaphet.chapa.Chapa} class.
@@ -16,10 +21,11 @@ import java.util.Set;
 public class Util {
 
     private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory().getValidator();
+    private static final Clock clock = Clock.systemUTC();
 
     /**
      *
-     * @param postData  instance of PostData class that contains post
+     * @param postData  Instance of PostData class that contains post
      *                  fields to be validated.
      */
     public static void validatePostData(PostData postData) {
@@ -37,7 +43,7 @@ public class Util {
 
     /**
      *
-     * @param postData instance of PostData class that contains post
+     * @param postData Instance of PostData class that contains post
      *                 fields to be validated.
      */
     private static void validate(PostData postData) {
@@ -56,7 +62,7 @@ public class Util {
      *
      * @param jsonData  JSON data that contains post fields to be mapped
      *                  to PostData object.
-     * @return          a PostData object which contains post fields of the
+     * @return          A PostData object which contains post fields of the
      *                  provided JSON data.
      */
     private static PostData mapJsonToPostData(String jsonData) {
@@ -77,10 +83,21 @@ public class Util {
     /**
      *
      * @param jsonData  JSON data to be mapped to Map object.
-     * @return          a Map object which contains post fields of the provided
+     * @return          A Map object which contains post fields of the provided
      *                  JSON data.
      */
     public static Map<String, String> jsonToMap(String jsonData){
         return new Gson().fromJson(jsonData, Map.class);
+    }
+
+    /**
+     *
+     * @return         A random string followed by the current date/time value.
+     */
+    public static String generateToken() {
+        final LocalDateTime now = LocalDateTime.parse(DateTimeFormatter
+                        .ofPattern("dd-MM-yy_HH-mm-ss")
+                        .format(LocalDateTime.now(clock)));
+        return UUID.randomUUID().toString().substring(5) + "_" + now;
     }
 }

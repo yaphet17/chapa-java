@@ -1,12 +1,10 @@
 package com.yaphet.chapa;
 
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
-import org.apache.http.HttpHeaders;
-
+import java.util.HashMap;
 import java.util.Map;
+
+import com.yaphet.chapa.client.ChapaClient;
+import com.yaphet.chapa.client.ChapaClientImpl;
 
 /**
  * The Chapa class is responsible for making GET and POST request to Chapa API
@@ -14,9 +12,7 @@ import java.util.Map;
  */
 public class Chapa {
 
-    private static HttpResponse<JsonNode> response;
-    private static final String authorizationHeader = HttpHeaders.AUTHORIZATION;
-    private static final String acceptEncodingHeader = HttpHeaders.ACCEPT_ENCODING;
+    private ChapaClient chapaClient;
     private static String responseBody;
     private final String BASE_URL = "https://api.chapa.co/v1";
     private final String SECRETE_KEY;
@@ -27,74 +23,64 @@ public class Chapa {
      */
     public Chapa(String secreteKey){
         this.SECRETE_KEY = secreteKey;
+        this.chapaClient = new ChapaClientImpl();
     }
 
     /**
      *
-     * @param postData  object of {@link com.yaphet.chapa.PostData} instantiated with
-     *                  post fields.
-     * @return          the current invoking object.
+     * @param secreteKey    A secrete key provided from Chapa.
+     * @param chapaClient   Implementation of {@link com.yaphet.chapa.client.ChapaClient}
+     *                      which is used to make API calls to Chapa.
      */
-    public Chapa initialize(PostData postData) {
+    public Chapa(ChapaClient chapaClient, String secreteKey){
+        this.chapaClient = chapaClient;
+        this.SECRETE_KEY = secreteKey;
+    }
+
+
+    /**
+     *
+     * @param postData  Object of {@link com.yaphet.chapa.PostData} instantiated with
+     *                  post fields.
+     * @return          The current invoking object.
+     */
+    public Chapa initialize(PostData postData) throws Throwable{
         Util.validatePostData(postData);
 
-        try {
-            response = Unirest.post(BASE_URL + "/transaction/initialize")
-                    .header(acceptEncodingHeader,"application/json")
-                    .header(authorizationHeader, "Bearer " + SECRETE_KEY)
-                    .field( "amount", postData.getAmount().toString())
-                    .field( "currency", postData.getCurrency())
-                    .field("email", postData.getEmail())
-                    .field("first_name", postData.getFirst_name())
-                    .field("last_name", postData.getLast_name())
-                    .field("tx_ref", postData.getTx_ref())
-                    .field("customization[title]",  postData.getCustomization_title())
-                    .field("customization[description]", postData.getCustomization_description())
-                    .asJson();
-        } catch (UnirestException e) {
-            throw new RuntimeException(e);
-        }
+        Map<String, String> fields = new HashMap<>();
+        fields.put( "amount", postData.getAmount().toString());
+        fields.put("currency", postData.getCurrency());
+        fields.put("email", postData.getEmail());
+        fields.put("first_name", postData.getFirst_name());
+        fields.put("last_name", postData.getLast_name());
+        fields.put("tx_ref", postData.getTx_ref());
+        fields.put("customization[title]",  postData.getCustomization_title());
+        fields.put("customization[description]", postData.getCustomization_description());
 
-        responseBody = response.getBody().toString();
+        responseBody = chapaClient.post(BASE_URL + "/transaction/initialize", fields, null, SECRETE_KEY);
         return this;
     }
 
     /**
      *
      * @param jsonData  JSON data which contains post fields.
-     * @return          the current invoking object.
-     * @throws          UnirestException if a post request to Chapa API
-     *                  fails for any reason.
+     * @return          The current invoking object.
      */
 
-    public Chapa initialize(String jsonData) throws UnirestException {
+    public Chapa initialize(String jsonData) throws Throwable {
         Util.validatePostData(jsonData);
-
-        response = Unirest.post(BASE_URL + "/transaction/initialize")
-                .header(acceptEncodingHeader,"application/json")
-                .header(authorizationHeader, "Bearer " + SECRETE_KEY)
-                .body(jsonData)
-                .asJson();
-        responseBody = response.getBody().toString();
+        responseBody = chapaClient.post(BASE_URL + "/transaction/initialize", null, jsonData, SECRETE_KEY);
         return this;
     }
 
     /**
      *
-     * @param transactionRef   unique transaction reference which was associated
+     * @param transactionRef   Unique transaction reference which was associated
      *                         with tx_ref field in post data.
-     * @return                 the current invoking object.
+     * @return                 The current invoking object.
      */
-    public Chapa verify(String transactionRef) {
-        try {
-            response = Unirest.get(BASE_URL + "/transaction/verify/" + transactionRef)
-                    .header(acceptEncodingHeader,"application/json")
-                    .header(authorizationHeader, "Bearer " + SECRETE_KEY)
-                    .asJson();
-        } catch (UnirestException e) {
-            throw new RuntimeException(e);
-        }
-        responseBody = response.getBody().toString();
+    public Chapa verify(String transactionRef) throws  Throwable{
+        responseBody = chapaClient.get(BASE_URL + "/transaction/verify/" + transactionRef, SECRETE_KEY);
         return this;
     }
 
