@@ -9,10 +9,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Set up JDK 17
+    - name: Set up JDK 8
       uses: actions/setup-java@v3
       with:
-        java-version: '17'
+        java-version: '8'
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
@@ -20,7 +20,7 @@ jobs:
     - name: Lint Code Base
       uses: github/super-linter@v4
       env:
-        VALIDATE_JAVA: true
+        VALIDATE_ALL_CODEBASE: false
         DEFAULT_BRANCH: main
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - uses: actions/upload-artifact@v2
@@ -28,4 +28,4 @@ jobs:
       with:
         name: build-reports
         path: |
-          target/reports
+          target
