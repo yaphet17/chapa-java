@@ -1,19 +1,19 @@
 package com.yaphet.chapa;
 
-import com.google.gson.Gson;
+import java.math.BigDecimal;
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.ValidationException;
 import javax.validation.Validator;
-import java.math.BigDecimal;
-import java.time.Clock;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+
+import com.google.gson.Gson;
 
 /**
  * The Util class serves as a helper class for the main {@link com.yaphet.chapa.Chapa} class.
@@ -22,6 +22,8 @@ public class Util {
 
     private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory().getValidator();
     private static final Clock clock = Clock.systemUTC();
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yy-HH-mm-ss");
+
 
     /**
      *
@@ -92,12 +94,10 @@ public class Util {
 
     /**
      *
-     * @return         A random string followed by the current date/time value.
+     * @return         A random string followed by the current date/time value (dd-MM-yy-HH-mm-ss).
      */
     public static String generateToken() {
-        final LocalDateTime now = LocalDateTime.parse(DateTimeFormatter
-                        .ofPattern("dd-MM-yy_HH-mm-ss")
-                        .format(LocalDateTime.now(clock)));
-        return UUID.randomUUID().toString().substring(5) + "_" + now;
+        final LocalDateTime now = LocalDateTime.now(clock);
+        return UUID.randomUUID().toString().substring(0, 8) + "_" + formatter.format(now);
     }
 }

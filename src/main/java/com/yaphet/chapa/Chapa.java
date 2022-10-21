@@ -12,7 +12,7 @@ import com.yaphet.chapa.client.ChapaClientImpl;
  */
 public class Chapa {
 
-    private ChapaClient chapaClient;
+    private final ChapaClient chapaClient;
     private static String responseBody;
     private final String BASE_URL = "https://api.chapa.co/v1";
     private final String SECRETE_KEY;
@@ -47,17 +47,31 @@ public class Chapa {
     public Chapa initialize(PostData postData) throws Throwable{
         Util.validatePostData(postData);
 
-        Map<String, String> fields = new HashMap<>();
+        Map<String, Object> fields = new HashMap<>();
         fields.put( "amount", postData.getAmount().toString());
         fields.put("currency", postData.getCurrency());
         fields.put("email", postData.getEmail());
         fields.put("first_name", postData.getFirst_name());
         fields.put("last_name", postData.getLast_name());
         fields.put("tx_ref", postData.getTx_ref());
-        fields.put("customization[title]",  postData.getCustomization_title());
-        fields.put("customization[description]", postData.getCustomization_description());
 
-        responseBody = chapaClient.post(BASE_URL + "/transaction/initialize", fields, null, SECRETE_KEY);
+        String customization_title = postData.getCustomization_title();
+        String customization_description = postData.getCustomization_description();
+        String customization_logo = postData.getCustomization_logo();
+
+        if(customization_title != null && !customization_title.isEmpty()) {
+            fields.put("customization[title]", customization_title);
+        }
+
+        if(customization_description != null && !customization_description.isEmpty()) {
+            fields.put("customization[description]", customization_description);
+        }
+
+        if(customization_logo != null && !customization_logo.isEmpty()) {
+            fields.put("customization[logo]", customization_logo);
+        }
+
+        responseBody = chapaClient.post(BASE_URL + "/transaction/initialize", fields, SECRETE_KEY);
         return this;
     }
 
@@ -69,7 +83,7 @@ public class Chapa {
 
     public Chapa initialize(String jsonData) throws Throwable {
         Util.validatePostData(jsonData);
-        responseBody = chapaClient.post(BASE_URL + "/transaction/initialize", null, jsonData, SECRETE_KEY);
+        responseBody = chapaClient.post(BASE_URL + "/transaction/initialize", jsonData, SECRETE_KEY);
         return this;
     }
 
