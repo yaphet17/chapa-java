@@ -49,9 +49,12 @@ public class Util {
      *                 fields to be validated.
      */
     private static void validate(PostData postData) {
-        Set<ConstraintViolation<PostData>> violations = VALIDATOR.validate(postData);
+        if(postData == null) {
+            throw new IllegalArgumentException("Can't validate null PostData object");
+        }
 
-        if(!violations.isEmpty()){
+        Set<ConstraintViolation<PostData>> violations = VALIDATOR.validate(postData);
+        if(!violations.isEmpty()) {
             StringBuilder errorMsg = new StringBuilder();
             for (ConstraintViolation<PostData> violation : violations) {
                 errorMsg.append(violation.getMessage()).append(", ");
@@ -68,6 +71,10 @@ public class Util {
      *                  provided JSON data.
      */
     private static PostData mapJsonToPostData(String jsonData) {
+        if(!notNullAndEmpty(jsonData)) {
+            throw new IllegalArgumentException("Can't map null or empty json to PostData object");
+        }
+
         Map<String, String> newMap = jsonToMap(jsonData);
         return PostData.builder()
                 .amount(new BigDecimal(newMap.get("amount")))
@@ -77,8 +84,7 @@ public class Util {
                 .last_name(newMap.get("last_name"))
                 .tx_ref(newMap.get("tx_ref"))
                 .callback_url(newMap.get("callback_url"))
-                .customization_title(newMap.get("customization_title"))
-                .customization_description(newMap.get("customization_description"))
+                .customizations(jsonToMap(newMap.get("customizations")))
                 .build();
     }
 
@@ -99,5 +105,9 @@ public class Util {
     public static String generateToken() {
         final LocalDateTime now = LocalDateTime.now(clock);
         return UUID.randomUUID().toString().substring(0, 8) + "_" + formatter.format(now);
+    }
+
+    static boolean notNullAndEmpty(String value) {
+        return value != null && !value.isEmpty();
     }
 }

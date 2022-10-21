@@ -21,7 +21,7 @@ public class Chapa {
     /**
      * @param secreteKey A secrete key provided from Chapa.
      */
-    public Chapa(String secreteKey) {
+    public Chapa(String secreteKey) { // TODO: consider deprecating this since it makes it hard to test this class
         this.SECRETE_KEY = secreteKey;
         this.chapaClient = new ChapaClientImpl();
     }
@@ -42,7 +42,7 @@ public class Chapa {
      *                 post fields.
      * @return         The current invoking object.
      */
-    public Chapa initialize(PostData postData) throws Throwable {
+    public Chapa initialize(PostData postData) throws Throwable { // TODO: consider creating custom exception handler and wrap any exception thrown by http client
         Util.validatePostData(postData);
 
         Map<String, Object> fields = new HashMap<>();
@@ -53,25 +53,26 @@ public class Chapa {
         fields.put("last_name", postData.getLast_name());
         fields.put("tx_ref", postData.getTx_ref());
 
+        Map<String, String> customizations = postData.getCustomizations();
         String callbackUrl = postData.getCallback_url();
-        String customizationTitle = postData.getCustomization_title();
-        String customizationDescription = postData.getCustomization_description();
-        String customizationLogo = postData.getCustomization_logo();
 
         if (callbackUrl != null && !callbackUrl.isEmpty()) {
             fields.put("callback_url", callbackUrl);
         }
 
-        if (customizationTitle != null && !customizationTitle.isEmpty()) {
-            fields.put("customization[title]", customizationTitle);
-        }
+        if(customizations != null && !customizations.isEmpty()) {
+          // TODO: consider directly adding all values to fields map
+            if(customizations.containsKey("customization[title]") && Util.notNullAndEmpty(customizations.get("customization[title]"))) {
+                fields.put("customization[title]", customizations.get("customization[title]"));
+            }
 
-        if (customizationDescription != null && !customizationDescription.isEmpty()) {
-            fields.put("customization[description]", customizationDescription);
-        }
+            if(customizations.containsKey("customization[description]") && Util.notNullAndEmpty(customizations.get("customization[description]"))) {
+                fields.put("customization[description]", customizations.get("customization[description]"));
+            }
 
-        if (customizationLogo != null && !customizationLogo.isEmpty()) {
-            fields.put("customization[logo]", customizationLogo);
+            if(customizations.containsKey("customization[logo]") && Util.notNullAndEmpty(customizations.get("customization[logo]"))) {
+                fields.put("customization[logo]", customizations.get("customization[logo]"));
+            }
         }
 
         responseBody = chapaClient.post(BASE_URL + "/transaction/initialize", fields, SECRETE_KEY);

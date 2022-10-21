@@ -28,6 +28,10 @@ Chapa chapa = new Chapa("you-secrete-key");
 To initialize transaction, you can specify your information by either using our `PostData` class
 
 ```java
+Map<String, String> customizations = new HashMap<>();
+customizations.put("customization[title]", "E-commerce");
+customizations.put("customization[description]", "It is time to pay");
+customizations.put("customization[logo]", "https://mylogo.com/log.png");
 PostData formData = PostData.builder()
         .amount(new BigDecimal("100"))
         .currency( "ETB")
@@ -36,9 +40,7 @@ PostData formData = PostData.builder()
         .email("abebe@bikila.com")
         .tx_ref("tx-myecommerce12345")
         .callback_url("https://chapa.co")
-        .customization_title("I love e-commerce")
-        .customization_description("It is time to pay")
-        .customization_logo("My logo")
+        .customization(customizations)
         .build();
 ```
 Or, you can use a string JSON data

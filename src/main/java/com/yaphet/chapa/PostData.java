@@ -1,13 +1,15 @@
 package com.yaphet.chapa;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import java.math.BigDecimal;
+import java.util.Map;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
+
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * The PostData class is an object representation of JSON form data
@@ -33,7 +35,5 @@ public class PostData {
     @NotNull(message = "The tx_ref field is required")
     private String tx_ref;
     private String callback_url;
-    private String customization_title;
-    private String customization_description;
-    private String customization_logo;
+    private Map<String, String> customizations;
 }
