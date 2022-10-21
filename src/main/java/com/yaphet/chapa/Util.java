@@ -21,7 +21,7 @@ import com.google.gson.Gson;
 public class Util {
 
     private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory().getValidator();
-    private static final Clock clock = Clock.systemUTC();
+    private static final Clock clock = Clock.systemDefaultZone();
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yy-HH-mm-ss");
 
 
