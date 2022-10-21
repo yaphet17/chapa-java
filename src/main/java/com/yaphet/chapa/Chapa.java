@@ -40,7 +40,7 @@ public class Chapa {
     /**
      * @param postData Object of {@link com.yaphet.chapa.PostData} instantiated with
      *                 post fields.
-     * @return         The current invoking object.
+     * @return The current invoking object.
      */
     public Chapa initialize(PostData postData) throws Throwable { // TODO: consider creating custom exception handler and wrap any exception thrown by http client
         Util.validatePostData(postData);
@@ -60,17 +60,17 @@ public class Chapa {
             fields.put("callback_url", callbackUrl);
         }
 
-        if(customizations != null && !customizations.isEmpty()) {
-          // TODO: consider directly adding all values to fields map
-            if(customizations.containsKey("customization[title]") && Util.notNullAndEmpty(customizations.get("customization[title]"))) {
+        if (customizations != null && !customizations.isEmpty()) {
+            // TODO: consider directly adding all values to fields map
+            if (customizations.containsKey("customization[title]") && Util.notNullAndEmpty(customizations.get("customization[title]"))) {
                 fields.put("customization[title]", customizations.get("customization[title]"));
             }
 
-            if(customizations.containsKey("customization[description]") && Util.notNullAndEmpty(customizations.get("customization[description]"))) {
+            if (customizations.containsKey("customization[description]") && Util.notNullAndEmpty(customizations.get("customization[description]"))) {
                 fields.put("customization[description]", customizations.get("customization[description]"));
             }
 
-            if(customizations.containsKey("customization[logo]") && Util.notNullAndEmpty(customizations.get("customization[logo]"))) {
+            if (customizations.containsKey("customization[logo]") && Util.notNullAndEmpty(customizations.get("customization[logo]"))) {
                 fields.put("customization[logo]", customizations.get("customization[logo]"));
             }
         }

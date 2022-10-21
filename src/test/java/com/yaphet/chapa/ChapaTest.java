@@ -23,9 +23,9 @@ import com.yaphet.chapa.client.ChapaClientImpl;
 @ExtendWith(MockitoExtension.class)
 class ChapaTest {
 
-     private ChapaClientImpl chapaClient;
-     private Chapa underTest;
-     private PostData postData;
+    private ChapaClientImpl chapaClient;
+    private Chapa underTest;
+    private PostData postData;
 
     @BeforeEach
     void setUp() {
@@ -37,7 +37,7 @@ class ChapaTest {
         customizations.put("customization[logo]", "https://mylogo.com/log.png");
         postData = PostData.builder()
                 .amount(new BigDecimal("100"))
-                .currency( "ETB")
+                .currency("ETB")
                 .first_name("Abebe")
                 .last_name("Bikila")
                 .email("abebe@bikila.com")
@@ -86,11 +86,11 @@ class ChapaTest {
         String expectedResponse = "{\"data\":null,\"message\":\"Payment not paid yet\",\"status\":\"null\"}";
 
         // when
-        when(chapaClient.get(anyString(),anyString())).thenReturn(expectedResponse);
+        when(chapaClient.get(anyString(), anyString())).thenReturn(expectedResponse);
         String actualResponse = underTest.verify("test-transaction").asString();
 
         // then
-        verify(chapaClient).get(anyString(),anyString());
+        verify(chapaClient).get(anyString(), anyString());
         JSONAssert.assertEquals(expectedResponse, actualResponse, true);
     }
 
@@ -104,7 +104,7 @@ class ChapaTest {
         String expectedResponse = "{\"data\":null,\"message\":\"Payment not paid yet\",\"status\":\"null\"}";
 
         // when
-        when(chapaClient.get(anyString(),anyString())).thenReturn(expectedResponse);
+        when(chapaClient.get(anyString(), anyString())).thenReturn(expectedResponse);
         Map<String, String> actualMap = underTest.verify("test-transaction").asMap();
 
         // then

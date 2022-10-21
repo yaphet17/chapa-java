@@ -19,8 +19,6 @@ public class ChapaClientImpl implements ChapaClient {
                 .header(acceptEncodingHeader, "application/json")
                 .header(authorizationHeader, "Bearer " + secreteKey)
                 .fields(fields);
-
-
         return request.asJson().getBody().toString();
     }
 
@@ -30,7 +28,6 @@ public class ChapaClientImpl implements ChapaClient {
                 .header(acceptEncodingHeader, "application/json")
                 .header(authorizationHeader, "Bearer " + secreteKey)
                 .body(body);
-
         return request.asJson().getBody().toString();
     }
 
