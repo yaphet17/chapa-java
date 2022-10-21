@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 
 import javax.validation.ValidationException;
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,9 +22,9 @@ class UtilTest {
                 .email("abebe@bikila.com")
                 .tx_ref("tx-myecommerce12345")
                 .callback_url("https://chapa.co")
-                .customization_title("I love e-commerce")
-                .customization_description("It is time to pay")
-                .customization_logo("My logo")
+//                .customization_title("I love e-commerce")
+//                .customization_description("It is time to pay")
+//                .customization_logo("My logo")
                 .build();
 
         // then
@@ -32,6 +34,10 @@ class UtilTest {
     @Test
     public void shouldFailForInvalidPostData(){
         // given
+        Map<String, String> customizations = new HashMap<>();
+        customizations.put("customization[title]", "E-commerce");
+        customizations.put("customization[description]", "It is time to pay");
+        customizations.put("customization[logo]", "https://mylogo.com/log.png");
         PostData formData = PostData.builder()
                 .currency( "ETB")
                 .first_name("Abebe")
@@ -39,9 +45,7 @@ class UtilTest {
                 .email("abebe@bikila.com")
                 .tx_ref("tx-myecommerce12345")
                 .callback_url("https://chapa.co")
-                .customization_title("I love e-commerce")
-                .customization_description("It is time to pay")
-                .customization_logo("My logo")
+                .customizations(customizations)
                 .build();
 
         // then

@@ -26,6 +26,8 @@ public class Test {
                 .customizations(customizations)
                 .build();
 
-        System.out.println(chapa.initialize(formData).asString());
+//        System.out.println(chapa.initialize(formData).asString());
+        System.out.println(chapa.verify("tx-myecommerce12aaa345").asMap());
     }
+
 }
