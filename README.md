@@ -7,13 +7,18 @@ Unofficial Java package for Chapa Payment Gateway.
 Visit official [Chapa's API Documentation](https://developer.chapa.co/docs)
 ## Installation
  Add the below maven dependency to your `pom.xml` file.
- ```xml
+```xml
     <dependency>
       <groupId>io.github.yaphet17</groupId>
-      <artifactId>chapa</artifactId>
+      <artifactId>Chapa</artifactId>
       <version>1.0.0</version>
     </dependency>
 ```
+Or add the below gradle dependency to your `build.gradle` file.
+```groovy
+    implementation 'io.github.yaphet17:Chapa:1.0.0'
+```
+
 ## Usage
 
 Instantiate a `Chapa` class.
