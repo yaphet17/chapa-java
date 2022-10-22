@@ -73,8 +73,7 @@ class UtilTest {
                 "'tx_ref': 'tx-myecommerce12345'," +
                 "'callback_url': 'https://chapa.co'," +
                 "'subaccount[id]': 'testSubAccountId'," +
-                "'customization[title]': 'I love e-commerce'," +
-                "'customization[description]': 'It is time to pay'" +
+                "'customizations':{'customization[title]':'E-commerce','customization[description]':'It is time to pay','customization[logo]':'https://mylogo.com/log.png'}" +
                 " }";
 
 
@@ -93,8 +92,7 @@ class UtilTest {
                 "'tx_ref': 'tx-myecommerce12345'," +
                 "'callback_url': 'https://chapa.co'," +
                 "'subaccount[id]': 'testSubAccountId'," +
-                "'customization[title]': 'I love e-commerce'," +
-                "'customization[description]': 'It is time to pay'" +
+                "'customizations':{'customization[title]':'E-commerce','customization[description]':'It is time to pay','customization[logo]':'https://mylogo.com/log.png'}" +
                 " }";
 
         // then
