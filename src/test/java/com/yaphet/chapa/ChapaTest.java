@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -30,7 +31,7 @@ import com.yaphet.chapa.model.SubAccount;
 @ExtendWith(MockitoExtension.class)
 class ChapaTest {
 
-    private Gson gson = new Gson();
+    private final Gson gson = new Gson();
     private ChapaClientImpl chapaClient;
     private Chapa underTest;
     private PostData postData;
@@ -50,8 +51,9 @@ class ChapaTest {
                 .firstName("Abebe")
                 .lastName("Bikila")
                 .email("abebe@bikila.com")
-                .txRef("tx-myecommerce12aaa345")
+                .txRef(Util.generateToken())
                 .callbackUrl("https://chapa.co")
+                .subAccountId("testSubAccountId")
                 .customizations(customizations)
                 .build();
         subAccount = SubAccount.builder()
@@ -135,12 +137,12 @@ class ChapaTest {
         String expectedResponse = "{\"data\":[{\"updated_at\":\"2022-07-04T21:34:03.000000Z\",\"name\":\"Awash Bank\",\"created_at\":\"2022-03-17T04:21:30.000000Z\",\"id\":\"80a510ea-7497-4499-8b49-ac13a3ab7d07\",\"country_id\":1}],\"message\":\"Banks retrieved\"}";
         List<Bank> expectedBanks = new ArrayList<>();
         expectedBanks.add(Bank.builder()
-                        .id("80a510ea-7497-4499-8b49-ac13a3ab7d07")
-                        .name("Awash Bank")
-                        .countryId(1)
-                        .createdAt("2022-03-17T04:21:30.000000Z")
-                        .updatedAt("2022-07-04T21:34:03.000000Z")
-                        .build());
+                .id("80a510ea-7497-4499-8b49-ac13a3ab7d07")
+                .name("Awash Bank")
+                .countryId(1)
+                .createdAt("2022-03-17T04:21:30.000000Z")
+                .updatedAt("2022-07-04T21:34:03.000000Z")
+                .build());
         // when
         when(chapaClient.get(anyString(), anyString())).thenReturn(expectedResponse);
         List<Bank> actualBanks = underTest.banks();
@@ -180,6 +182,43 @@ class ChapaTest {
         // then
         verify(chapaClient).post(anyString(), anyMap(), anyString());
         JSONAssert.assertEquals(gson.toJson(expectedMap), gson.toJson(actualMap), true);
+    }
+
+    // This should not run in the pipeline
+    @Test
+    @Disabled
+    public void testDefault() throws Throwable {
+        // given
+        Map<String, String> customizations = new HashMap<>();
+        customizations.put("customization[title]", "E-commerce");
+        customizations.put("customization[description]", "It is time to pay");
+        customizations.put("customization[logo]", "https://mylogo.com/log.png");
+        PostData postData = PostData.builder()
+                .amount(new BigDecimal("100"))
+                .currency("ETB")
+                .firstName("Abebe")
+                .lastName("Bikila")
+                .email("abebe@bikila.com")
+                .txRef(Util.generateToken())
+                .callbackUrl("https://chapa.co")
+                .subAccountId("testSubAccountId")
+                .customizations(customizations)
+                .build();
+        subAccount = SubAccount.builder()
+                .businessName("Abebe Suq")
+                .accountName("Abebe Bikila")
+                .accountNumber("0123456789")
+                .bankCode("96e41186-29ba-4e30-b013-2ca36d7e7025")
+                .splitType(SplitType.PERCENTAGE)
+                .splitValue(0.2)
+                .build();
+
+        Chapa chapa = new Chapa("");
+        List<Bank> banks = chapa.banks();
+        banks.forEach(bank -> System.out.println("Bank name: " + bank.getName() + " Bank Code: " + bank.getId()));
+        System.out.println("Create SubAccount response: " + chapa.createSubAccount(subAccount).asString());
+        System.out.println("Initialize response: " + chapa.initialize(postData).asString());
+        System.out.println("Verify response: " + chapa.verify(postData.getTxRef()).asString());
     }
 
 }
