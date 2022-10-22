@@ -35,7 +35,9 @@ class ChapaTest {
     private ChapaClientImpl chapaClient;
     private Chapa underTest;
     private PostData postData;
+    private String postDataString;
     private SubAccount subAccount;
+    private String subAccountString;
 
     @BeforeEach
     void setUp() {
@@ -56,6 +58,17 @@ class ChapaTest {
                 .subAccountId("testSubAccountId")
                 .customizations(customizations)
                 .build();
+        postDataString = " { " +
+                "'amount': '100', " +
+                "'currency': 'ETB'," +
+                "'email': 'abebe@bikila.com'," +
+                "'first_name': 'Abebe'," +
+                "'last_name': 'Bikila'," +
+                "'tx_ref': 'tx-myecommerce12345'," +
+                "'callback_url': 'https://chapa.co'," +
+                "'subaccount[id]': 'testSubAccountId'," +
+                "'customizations':{'customization[title]':'E-commerce','customization[description]':'It is time to pay','customization[logo]':'https://mylogo.com/log.png'}" +
+                " }";
         subAccount = SubAccount.builder()
                 .businessName("Abebe Suq")
                 .accountName("Abebe Bikila")
@@ -64,6 +77,7 @@ class ChapaTest {
                 .splitType(SplitType.PERCENTAGE)
                 .splitValue(0.2)
                 .build();
+        subAccountString = "{'business_name':'Abebe Suq','bank_code':'001','account_name':'Abebe Bikila','account_number':'0123456789','split_type':'PERCENTAGE','split_value':0.2}";
     }
 
     // This is not really a unit test ):
@@ -100,6 +114,20 @@ class ChapaTest {
     }
 
     @Test
+    public void shouldInitializeTransaction_With_Json_Input() throws Throwable {
+        // given
+        String expectedResponse = "{\"data\":{\"checkout_url\":\"https://checkout.chapa.co/checkout/payment/somestring\"},\"message\":\"Hosted Link\",\"status\":\"success\"}";
+
+        // when
+        when(chapaClient.post(anyString(), anyString(), anyString())).thenReturn(expectedResponse);
+        String actualResponse = underTest.initialize(postDataString).asString();
+
+        // then
+        verify(chapaClient).post(anyString(), anyString(), anyString());
+        JSONAssert.assertEquals(expectedResponse, actualResponse, true);
+    }
+
+    @Test
     public void shouldVerifyTransaction_asString() throws Throwable {
         // given
         String expectedResponse = "{\"data\":null,\"message\":\"Payment not paid yet\",\"status\":\"null\"}";
@@ -130,6 +158,7 @@ class ChapaTest {
         verify(chapaClient).get(anyString(), anyString());
         assertEquals(expectedMap.toString(), actualMap.toString());
     }
+
 
     @Test
     public void shouldGetListOfBanks() throws Throwable {
@@ -184,6 +213,21 @@ class ChapaTest {
         JSONAssert.assertEquals(gson.toJson(expectedMap), gson.toJson(actualMap), true);
     }
 
+    @Test
+    public void shouldCreateSubAccount_With_Json_Input() throws Throwable {
+        // given
+        String expectedResponse = "{\"data\":null,\"message\":\"The Bank Code is incorrect please check if it does exist with our getbanks endpoint.\",\"status\":\"failed\"}";
+
+        // when
+        when(chapaClient.post(anyString(), anyString(), anyString())).thenReturn(expectedResponse);
+        String actualResponse = underTest.createSubAccount(subAccountString).asString();
+
+        // then
+        verify(chapaClient).post(anyString(), anyString(), anyString());
+        JSONAssert.assertEquals(expectedResponse, actualResponse, true);
+    }
+
+
     // This should not run in the pipeline
     @Test
     @Disabled
@@ -212,12 +256,15 @@ class ChapaTest {
                 .splitType(SplitType.PERCENTAGE)
                 .splitValue(0.2)
                 .build();
+        String formData = gson.toJson(postData);
+        System.out.println(formData);
 
-        Chapa chapa = new Chapa("");
+        Chapa chapa = new Chapa("CHASECK_TEST-LgjzxoU0DE8L9SnPsK4c1wWqFzhlrJVH");
         List<Bank> banks = chapa.banks();
         banks.forEach(bank -> System.out.println("Bank name: " + bank.getName() + " Bank Code: " + bank.getId()));
         System.out.println("Create SubAccount response: " + chapa.createSubAccount(subAccount).asString());
-        System.out.println("Initialize response: " + chapa.initialize(postData).asString());
+        System.out.println("Initialize response with PostData: " + chapa.initialize(postData).asString());
+        System.out.println("Initialize response with JsonData: " + chapa.initialize(formData).asString());
         System.out.println("Verify response: " + chapa.verify(postData.getTxRef()).asString());
     }
 
