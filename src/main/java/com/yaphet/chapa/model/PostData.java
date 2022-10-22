@@ -40,5 +40,7 @@ public class PostData {
     private String txRef;
     @SerializedName("callback_url")
     private String callbackUrl;
+    @SerializedName("subaccounts[id]")
+    private String subAccountId;
     private Map<String, String> customizations;
 }
