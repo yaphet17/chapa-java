@@ -10,6 +10,8 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.yaphet.chapa.model.PostData;
+import com.yaphet.chapa.model.SplitType;
+import com.yaphet.chapa.model.SubAccount;
 
 class UtilTest {
 
@@ -73,6 +75,7 @@ class UtilTest {
         // then
         assertDoesNotThrow(() -> Util.validatePostData(formData));
     }
+
     @Test
     void shouldFailFoInvalidPostDataWithJsonInput() {
         // given
@@ -91,9 +94,4 @@ class UtilTest {
         assertThrows(ValidationException.class, () -> Util.validatePostData(formData));
     }
 
-    @Test
-    public void dev() throws Throwable {
-        Chapa chapa = new Chapa("CHASECK_TEST-LgjzxoU0DE8L9SnPsK4c1wWqFzhlrJVH");
-//        chapa.banks().asList().forEach(bank -> System.out.println(bank.getCountryId()));
-    }
 }

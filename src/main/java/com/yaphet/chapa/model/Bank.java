@@ -14,7 +14,7 @@ public class Bank {
     private String id;
     private String name;
     @SerializedName("country_id")
-    private String countryId;
+    private int countryId;
     @SerializedName("created_at")
     private String createdAt;
     @SerializedName("updated_at")
@@ -28,7 +28,7 @@ public class Bank {
         return name;
     }
 
-    public String getCountryId() {
+    public int getCountryId() {
         return countryId;
     }
 

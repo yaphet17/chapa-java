@@ -8,6 +8,7 @@ import com.yaphet.chapa.client.ChapaClient;
 import com.yaphet.chapa.client.ChapaClientImpl;
 import com.yaphet.chapa.model.Bank;
 import com.yaphet.chapa.model.PostData;
+import com.yaphet.chapa.model.SubAccount;
 
 /**
  * The Chapa class is responsible for making GET and POST request to Chapa API
@@ -97,14 +98,30 @@ public class Chapa {
      * @param transactionRef Unique transaction reference which was associated
      *                       with tx_ref field in post data.
      * @return               The current invoking object.
+     * @throws Throwable
      */
     public Chapa verify(String transactionRef) throws Throwable {
         responseBody = chapaClient.get(BASE_URL + "/transaction/verify/" + transactionRef, SECRETE_KEY);
         return this;
     }
 
-    public Chapa banks() throws Throwable {
+    /**
+     * @return          List of banks supported by Chapa
+     * @throws Throwable
+     */
+    public List<Bank> banks() throws Throwable {
         responseBody = chapaClient.get(BASE_URL + "/banks", SECRETE_KEY);
+        return  Util.extractBanks(responseBody);
+    }
+
+    /**
+     *
+     * @param subAccount
+     * @return
+     * @throws Throwable
+     */
+    public Chapa createSubAccount(SubAccount subAccount) throws Throwable {
+        responseBody = chapaClient.get(BASE_URL + "/subaccount", SECRETE_KEY);
         return this;
     }
 
@@ -120,13 +137,6 @@ public class Chapa {
      */
     public Map<String, String> asMap() {
         return Util.jsonToMap(responseBody);
-    }
-
-    /**
-     * @return          List<Bank> representation of the response JSON data.
-     */
-    public List<Bank> asList() {
-        return Util.extractBanks(responseBody);
     }
 
 }
