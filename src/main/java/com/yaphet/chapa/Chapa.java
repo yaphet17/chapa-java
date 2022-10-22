@@ -60,8 +60,13 @@ public class Chapa {
 
         Map<String, String> customizations = postData.getCustomizations();
         String callbackUrl = postData.getCallbackUrl();
+        String subAccountId = postData.getSubAccountId();
 
-        if (callbackUrl != null && !callbackUrl.isEmpty()) {
+        if (Util.notNullAndEmpty(subAccountId)) {
+            fields.put("subaccount[id]", subAccountId);
+        }
+
+        if (Util.notNullAndEmpty(callbackUrl)) {
             fields.put("callback_url", callbackUrl);
         }
 
