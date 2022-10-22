@@ -1,9 +1,12 @@
 package com.yaphet.chapa;
 
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -14,6 +17,11 @@ import javax.validation.ValidationException;
 import javax.validation.Validator;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
+import com.yaphet.chapa.model.Bank;
+import com.yaphet.chapa.model.PostData;
 
 /**
  * The Util class serves as a helper class for the main {@link com.yaphet.chapa.Chapa} class.
@@ -96,6 +104,13 @@ public class Util {
      */
     public static Map<String, String> jsonToMap(String jsonData){
         return new Gson().fromJson(jsonData, Map.class);
+    }
+
+    static List<Bank> extractBanks(String jsonData) {
+        Gson gson = new Gson();
+        JsonObject jsonObject = gson.fromJson( jsonData, JsonObject.class);
+        Type bankListType = new TypeToken<List<Bank>>() {}.getType();
+        return gson.fromJson(jsonObject.get("data"), bankListType);
     }
 
     /**

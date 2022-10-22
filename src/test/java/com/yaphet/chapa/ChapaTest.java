@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import com.yaphet.chapa.client.ChapaClientImpl;
+import com.yaphet.chapa.model.PostData;
 
 
 @ExtendWith(MockitoExtension.class)

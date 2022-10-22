@@ -1,10 +1,13 @@
 package com.yaphet.chapa;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.yaphet.chapa.client.ChapaClient;
 import com.yaphet.chapa.client.ChapaClientImpl;
+import com.yaphet.chapa.model.Bank;
+import com.yaphet.chapa.model.PostData;
 
 /**
  * The Chapa class is responsible for making GET and POST request to Chapa API
@@ -38,9 +41,9 @@ public class Chapa {
 
 
     /**
-     * @param postData Object of {@link com.yaphet.chapa.PostData} instantiated with
+     * @param postData Object of {@link PostData} instantiated with
      *                 post fields.
-     * @return The current invoking object.
+     * @return         The current invoking object.
      */
     public Chapa initialize(PostData postData) throws Throwable { // TODO: consider creating custom exception handler and wrap any exception thrown by http client
         Util.validatePostData(postData);
@@ -81,7 +84,7 @@ public class Chapa {
 
     /**
      * @param jsonData JSON data which contains post fields.
-     * @return The current invoking object.
+     * @return         The current invoking object.
      */
 
     public Chapa initialize(String jsonData) throws Throwable {
@@ -93,25 +96,37 @@ public class Chapa {
     /**
      * @param transactionRef Unique transaction reference which was associated
      *                       with tx_ref field in post data.
-     * @return The current invoking object.
+     * @return               The current invoking object.
      */
     public Chapa verify(String transactionRef) throws Throwable {
         responseBody = chapaClient.get(BASE_URL + "/transaction/verify/" + transactionRef, SECRETE_KEY);
         return this;
     }
 
+    public Chapa banks() throws Throwable {
+        responseBody = chapaClient.get(BASE_URL + "/banks", SECRETE_KEY);
+        return this;
+    }
+
     /**
-     * @return String representation of the response JSON data.
+     * @return          String representation of the response JSON data.
      */
     public String asString() {
         return responseBody;
     }
 
     /**
-     * @return Map representation of the response JSON data.
+     * @return          Map<String, String> representation of the response JSON data.
      */
     public Map<String, String> asMap() {
         return Util.jsonToMap(responseBody);
+    }
+
+    /**
+     * @return          List<Bank> representation of the response JSON data.
+     */
+    public List<Bank> asList() {
+        return Util.extractBanks(responseBody);
     }
 
 }

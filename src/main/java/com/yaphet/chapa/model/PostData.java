@@ -1,4 +1,4 @@
-package com.yaphet.chapa;
+package com.yaphet.chapa.model;
 
 import java.math.BigDecimal;
 import java.util.Map;
