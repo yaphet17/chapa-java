@@ -35,17 +35,15 @@ public class Util {
 
 
     /**
-     *
-     * @param data      Object to be validated for constraint violation.
-     *
+     * @param data Object to be validated for constraint violation.
      */
-     static <T>  void validate(T data) {
-        if(data == null) {
+    static <T> void validate(T data) {
+        if (data == null) {
             throw new IllegalArgumentException("Can't validate null object");
         }
 
         Set<ConstraintViolation<T>> violations = VALIDATOR.validate(data);
-        if(!violations.isEmpty()) {
+        if (!violations.isEmpty()) {
             StringBuilder errorMsg = new StringBuilder();
             for (ConstraintViolation<T> violation : violations) {
                 errorMsg.append(violation.getMessage()).append(", ");
@@ -55,22 +53,22 @@ public class Util {
     }
 
     /**
-     *
-     * @param jsonData  JSON data that contains post fields to be mapped
-     *                  to PostData object.
-     * @return          A PostData object which contains post fields of the
-     *                  provided JSON data.
+     * @param jsonData JSON data that contains post fields to be mapped
+     *                 to PostData object.
+     * @return A PostData object which contains post fields of the
+     * provided JSON data.
      */
-     public static PostData mapJsonToPostData(String jsonData) {
-         if(!notNullAndEmpty(jsonData)) {
-             throw new IllegalArgumentException("Can't map null or empty json to PostData object");
-         }
+    public static PostData mapJsonToPostData(String jsonData) {
+        if (!notNullAndEmpty(jsonData)) {
+            throw new IllegalArgumentException("Can't map null or empty json to PostData object");
+        }
 
-         Map<String, String> newMap = jsonToMap(jsonData);
-         JsonObject jsonObject = JSON_MAPPER.fromJson(jsonData, JsonObject.class);
-         Type bankListType = new TypeToken< Map<String, String>>() {}.getType();
-         Map<String, String> customizations = JSON_MAPPER.fromJson(jsonObject.get("customizations"), bankListType);
-         return PostData.builder()
+        Map<String, String> newMap = jsonToMap(jsonData);
+        JsonObject jsonObject = JSON_MAPPER.fromJson(jsonData, JsonObject.class);
+        Type bankListType = new TypeToken<Map<String, String>>() {
+        }.getType();
+        Map<String, String> customizations = JSON_MAPPER.fromJson(jsonObject.get("customizations"), bankListType);
+        return PostData.builder()
                 .amount(new BigDecimal(String.valueOf(newMap.get("amount"))))
                 .currency(newMap.get("currency"))
                 .email(newMap.get("email"))
@@ -83,14 +81,13 @@ public class Util {
     }
 
     /**
-     *
-     * @param jsonData  JSON data that contains post fields to be mapped
-     *                  to PostData object.
-     * @return          A PostData object which contains post fields of the
-     *                  provided JSON data.
+     * @param jsonData JSON data that contains post fields to be mapped
+     *                 to PostData object.
+     * @return A PostData object which contains post fields of the
+     * provided JSON data.
      */
     public static SubAccount mapJsonToSubAccount(String jsonData) {
-        if(!notNullAndEmpty(jsonData)) {
+        if (!notNullAndEmpty(jsonData)) {
             throw new IllegalArgumentException("Can't map null or empty json to SubAccount object");
         }
 
@@ -107,24 +104,23 @@ public class Util {
 
 
     /**
-     *
-     * @param jsonData  JSON data to be mapped to Map object.
-     * @return          A Map object which contains post fields of the provided
-     *                  JSON data.
+     * @param jsonData JSON data to be mapped to Map object.
+     * @return A Map object which contains post fields of the provided
+     * JSON data.
      */
-    public static Map<String, String> jsonToMap(String jsonData){
+    public static Map<String, String> jsonToMap(String jsonData) {
         return JSON_MAPPER.fromJson(jsonData, Map.class);
     }
 
     static List<Bank> extractBanks(String jsonData) {
-        JsonObject jsonObject = JSON_MAPPER.fromJson( jsonData, JsonObject.class);
-        Type bankListType = new TypeToken<List<Bank>>() {}.getType();
+        JsonObject jsonObject = JSON_MAPPER.fromJson(jsonData, JsonObject.class);
+        Type bankListType = new TypeToken<List<Bank>>() {
+        }.getType();
         return JSON_MAPPER.fromJson(jsonObject.get("data"), bankListType);
     }
 
     /**
-     *
-     * @return         A random string followed by the current date/time value (dd-MM-yy-HH-mm-ss).
+     * @return A random string followed by the current date/time value (dd-MM-yy-HH-mm-ss).
      */
     public static String generateToken() {
         final LocalDateTime now = LocalDateTime.now(CLOCK);

@@ -29,7 +29,7 @@ class UtilTest {
         // given
         PostData formData = PostData.builder()
                 .amount(new BigDecimal("100"))
-                .currency( "ETB")
+                .currency("ETB")
                 .firstName("Abebe")
                 .lastName("Bikila")
                 .email("abebe@bikila.com")
@@ -44,10 +44,10 @@ class UtilTest {
     }
 
     @Test
-    public void shouldFailForInvalidPostData(){
+    public void shouldFailForInvalidPostData() {
         // given
         PostData formData = PostData.builder()
-                .currency( "ETB")
+                .currency("ETB")
                 .firstName("Abebe")
                 .lastName("Bikila")
                 .email("abebe@bikila.com")

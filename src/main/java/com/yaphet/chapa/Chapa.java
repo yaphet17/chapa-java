@@ -42,10 +42,10 @@ public class Chapa {
 
 
     /**
-     * @param postData      Object of {@link PostData} instantiated with
-     *                      post fields.
-     * @return              The current invoking object.
-     * @throws Throwable    Throws an exception for failed request to Chapa API.
+     * @param postData Object of {@link PostData} instantiated with
+     *                 post fields.
+     * @return The current invoking object.
+     * @throws Throwable Throws an exception for failed request to Chapa API.
      */
     public Chapa initialize(PostData postData) throws Throwable { // TODO: consider creating custom exception handler and wrap any exception thrown by http client
         Util.validate(postData);
@@ -90,9 +90,9 @@ public class Chapa {
     }
 
     /**
-     * @param jsonData      JSON data which contains post fields.
-     * @return              The current invoking object.
-     * @throws Throwable    Throws an exception for failed request to Chapa API.
+     * @param jsonData JSON data which contains post fields.
+     * @return The current invoking object.
+     * @throws Throwable Throws an exception for failed request to Chapa API.
      */
 
     public Chapa initialize(String jsonData) throws Throwable {
@@ -104,11 +104,11 @@ public class Chapa {
     /**
      * @param transactionRef Unique transaction reference which was associated
      *                       with tx_ref field in post data.
-     * @return               The current invoking object.
-     * @throws Throwable     Throws an exception for failed request to Chapa API.
+     * @return The current invoking object.
+     * @throws Throwable Throws an exception for failed request to Chapa API.
      */
     public Chapa verify(String transactionRef) throws Throwable {
-        if(!Util.notNullAndEmpty(transactionRef)){
+        if (!Util.notNullAndEmpty(transactionRef)) {
             throw new IllegalArgumentException("Transaction reference can't be null or empty");
         }
         responseBody = chapaClient.get(BASE_URL + "/transaction/verify/" + transactionRef, SECRETE_KEY);
@@ -116,20 +116,19 @@ public class Chapa {
     }
 
     /**
-     * @return            List of banks supported by Chapa
-     * @throws Throwable  Throws an exception for failed request to Chapa API.
+     * @return List of banks supported by Chapa
+     * @throws Throwable Throws an exception for failed request to Chapa API.
      */
     public List<Bank> banks() throws Throwable {
         responseBody = chapaClient.get(BASE_URL + "/banks", SECRETE_KEY);
-        return  Util.extractBanks(responseBody);
+        return Util.extractBanks(responseBody);
     }
 
     /**
-     *
-     * @param subAccount    Object of {@link SubAccount} instantiated with
-     *                      post fields
-     * @return              The current invoking object.
-     * @throws Throwable    Throws an exception for failed request to Chapa API.
+     * @param subAccount Object of {@link SubAccount} instantiated with
+     *                   post fields
+     * @return The current invoking object.
+     * @throws Throwable Throws an exception for failed request to Chapa API.
      */
     public Chapa createSubAccount(SubAccount subAccount) throws Throwable {
         Util.validate(subAccount);
@@ -141,31 +140,30 @@ public class Chapa {
         fields.put("bank_code", subAccount.getBankCode());
         fields.put("split_type", subAccount.getSplitType().name().toLowerCase());
         fields.put("split_value", subAccount.getSplitValue());
-        responseBody = chapaClient.post(BASE_URL + "/subaccount", fields,  SECRETE_KEY);
+        responseBody = chapaClient.post(BASE_URL + "/subaccount", fields, SECRETE_KEY);
         return this;
     }
 
     /**
-     *
-     * @param jsonData     JSON data which contains post fields.
-     * @return             The current invoking object.
-     * @throws Throwable   Throws an exception for failed request to Chapa API.
+     * @param jsonData JSON data which contains post fields.
+     * @return The current invoking object.
+     * @throws Throwable Throws an exception for failed request to Chapa API.
      */
     public Chapa createSubAccount(String jsonData) throws Throwable {
         Util.validate(Util.mapJsonToSubAccount(jsonData));
-        responseBody = chapaClient.post(BASE_URL + "/subaccount", jsonData,  SECRETE_KEY);
+        responseBody = chapaClient.post(BASE_URL + "/subaccount", jsonData, SECRETE_KEY);
         return this;
     }
 
     /**
-     * @return          String representation of the response JSON data.
+     * @return String representation of the response JSON data.
      */
     public String asString() {
         return responseBody;
     }
 
     /**
-     * @return          Map representation of the response JSON data.
+     * @return Map representation of the response JSON data.
      */
     public Map<String, String> asMap() {
         return Util.jsonToMap(responseBody);
