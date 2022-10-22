@@ -30,29 +30,10 @@ public class Util {
     private static final Clock clock = Clock.systemDefaultZone();
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yy-HH-mm-ss");
 
-
     /**
      *
-     * @param postData  Instance of PostData class that contains post
-     *                  fields to be validated.
-     */
-    public static void validatePostData(PostData postData) {
-        validate(postData);
-    }
-
-    /**
+     * @param data      Object to be validated for constraint violation.
      *
-     * @param jsonData  JSON data that contains post fields to be validated.
-     */
-    public static void validatePostData(String jsonData) {
-        PostData postData = mapJsonToPostData(jsonData);
-        validate(postData);
-    }
-
-    /**
-     *
-     * @param data      Object class that contains post
-     *                 fields to be validated.
      */
      static <T>  void validate(T data) {
         if(data == null) {
@@ -76,7 +57,7 @@ public class Util {
      * @return          A PostData object which contains post fields of the
      *                  provided JSON data.
      */
-    private static PostData mapJsonToPostData(String jsonData) {
+     static PostData mapJsonToPostData(String jsonData) {
         if(!notNullAndEmpty(jsonData)) {
             throw new IllegalArgumentException("Can't map null or empty json to PostData object");
         }

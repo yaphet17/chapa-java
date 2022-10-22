@@ -47,7 +47,7 @@ public class Chapa {
      * @return         The current invoking object.
      */
     public Chapa initialize(PostData postData) throws Throwable { // TODO: consider creating custom exception handler and wrap any exception thrown by http client
-        Util.validatePostData(postData);
+        Util.validate(postData);
 
         Map<String, Object> fields = new HashMap<>();
         fields.put("amount", postData.getAmount().toString());
@@ -89,7 +89,7 @@ public class Chapa {
      */
 
     public Chapa initialize(String jsonData) throws Throwable {
-        Util.validatePostData(jsonData);
+        Util.validate(Util.mapJsonToPostData(jsonData));
         responseBody = chapaClient.post(BASE_URL + "/transaction/initialize", jsonData, SECRETE_KEY);
         return this;
     }
@@ -124,7 +124,6 @@ public class Chapa {
      * @throws Throwable
      */
     public Chapa createSubAccount(SubAccount subAccount) throws Throwable {
-        Util.vali
         responseBody = chapaClient.get(BASE_URL + "/subaccount", SECRETE_KEY);
         return this;
     }

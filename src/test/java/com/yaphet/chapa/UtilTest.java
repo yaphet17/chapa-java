@@ -1,17 +1,17 @@
 package com.yaphet.chapa;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import javax.validation.ValidationException;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import javax.validation.ValidationException;
+
+import org.junit.jupiter.api.Test;
 
 import com.yaphet.chapa.model.PostData;
-import com.yaphet.chapa.model.SplitType;
-import com.yaphet.chapa.model.SubAccount;
 
 class UtilTest {
 
@@ -32,7 +32,7 @@ class UtilTest {
                 .build();
 
         // then
-        assertDoesNotThrow(() -> Util.validatePostData(formData));
+        assertDoesNotThrow(() -> Util.validate(formData));
     }
 
     @Test
@@ -53,7 +53,7 @@ class UtilTest {
                 .build();
 
         // then
-        assertThrows(ValidationException.class, () -> Util.validatePostData(formData));
+        assertThrows(ValidationException.class, () -> Util.validate(formData));
     }
 
     @Test
@@ -73,7 +73,7 @@ class UtilTest {
 
 
         // then
-        assertDoesNotThrow(() -> Util.validatePostData(formData));
+        assertDoesNotThrow(() -> Util.validate(Util.mapJsonToPostData(formData)));
     }
 
     @Test
@@ -91,7 +91,7 @@ class UtilTest {
                 " }";
 
         // then
-        assertThrows(ValidationException.class, () -> Util.validatePostData(formData));
+        assertThrows(ValidationException.class, () -> Util.validate(Util.mapJsonToPostData(formData)));
     }
 
 }
