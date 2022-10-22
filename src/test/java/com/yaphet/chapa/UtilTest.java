@@ -9,11 +9,20 @@ import java.util.Map;
 
 import javax.validation.ValidationException;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.yaphet.chapa.model.PostData;
 
 class UtilTest {
+    private final Map<String, String> customizations = new HashMap<>();
+
+    @BeforeEach
+    public void setUp() {
+        customizations.put("customization[title]", "E-commerce");
+        customizations.put("customization[description]", "It is time to pay");
+        customizations.put("customization[logo]", "https://mylogo.com/log.png");
+    }
 
     @Test
     public void shouldValidatePostData() {
@@ -26,9 +35,8 @@ class UtilTest {
                 .email("abebe@bikila.com")
                 .txRef("tx-myecommerce12345")
                 .callbackUrl("https://chapa.co")
-//                .customization_title("I love e-commerce")
-//                .customization_description("It is time to pay")
-//                .customization_logo("My logo")
+                .subAccountId("testSubAccountId")
+                .customizations(customizations)
                 .build();
 
         // then
@@ -38,10 +46,6 @@ class UtilTest {
     @Test
     public void shouldFailForInvalidPostData(){
         // given
-        Map<String, String> customizations = new HashMap<>();
-        customizations.put("customization[title]", "E-commerce");
-        customizations.put("customization[description]", "It is time to pay");
-        customizations.put("customization[logo]", "https://mylogo.com/log.png");
         PostData formData = PostData.builder()
                 .currency( "ETB")
                 .firstName("Abebe")
@@ -49,6 +53,7 @@ class UtilTest {
                 .email("abebe@bikila.com")
                 .txRef("tx-myecommerce12345")
                 .callbackUrl("https://chapa.co")
+                .subAccountId("testSubAccountId")
                 .customizations(customizations)
                 .build();
 
@@ -67,6 +72,7 @@ class UtilTest {
                 "'last_name': 'Bikila'," +
                 "'tx_ref': 'tx-myecommerce12345'," +
                 "'callback_url': 'https://chapa.co'," +
+                "'subaccount[id]': 'testSubAccountId'," +
                 "'customization[title]': 'I love e-commerce'," +
                 "'customization[description]': 'It is time to pay'" +
                 " }";
@@ -86,6 +92,7 @@ class UtilTest {
                 "'last_name': 'Bikila'," +
                 "'tx_ref': 'tx-myecommerce12345'," +
                 "'callback_url': 'https://chapa.co'," +
+                "'subaccount[id]': 'testSubAccountId'," +
                 "'customization[title]': 'I love e-commerce'," +
                 "'customization[description]': 'It is time to pay'" +
                 " }";
