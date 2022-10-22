@@ -139,7 +139,7 @@ public class Chapa {
     }
 
     /**
-     * @return          Map<String, String> representation of the response JSON data.
+     * @return          Map representation of the response JSON data.
      */
     public Map<String, String> asMap() {
         return Util.jsonToMap(responseBody);
