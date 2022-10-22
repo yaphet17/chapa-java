@@ -42,9 +42,10 @@ public class Chapa {
 
 
     /**
-     * @param postData Object of {@link PostData} instantiated with
-     *                 post fields.
-     * @return         The current invoking object.
+     * @param postData      Object of {@link PostData} instantiated with
+     *                      post fields.
+     * @return              The current invoking object.
+     * @throws Throwable    Throws an exception for failed request to Chapa API.
      */
     public Chapa initialize(PostData postData) throws Throwable { // TODO: consider creating custom exception handler and wrap any exception thrown by http client
         Util.validate(postData);
@@ -84,8 +85,9 @@ public class Chapa {
     }
 
     /**
-     * @param jsonData JSON data which contains post fields.
-     * @return         The current invoking object.
+     * @param jsonData      JSON data which contains post fields.
+     * @return              The current invoking object.
+     * @throws Throwable    Throws an exception for failed request to Chapa API.
      */
 
     public Chapa initialize(String jsonData) throws Throwable {
@@ -98,7 +100,7 @@ public class Chapa {
      * @param transactionRef Unique transaction reference which was associated
      *                       with tx_ref field in post data.
      * @return               The current invoking object.
-     * @throws Throwable
+     * @throws Throwable     Throws an exception for failed request to Chapa API.
      */
     public Chapa verify(String transactionRef) throws Throwable {
         if(!Util.notNullAndEmpty(transactionRef)){
@@ -109,8 +111,8 @@ public class Chapa {
     }
 
     /**
-     * @return          List of banks supported by Chapa
-     * @throws Throwable
+     * @return            List of banks supported by Chapa
+     * @throws Throwable  Throws an exception for failed request to Chapa API.
      */
     public List<Bank> banks() throws Throwable {
         responseBody = chapaClient.get(BASE_URL + "/banks", SECRETE_KEY);
@@ -119,9 +121,10 @@ public class Chapa {
 
     /**
      *
-     * @param subAccount
-     * @return
-     * @throws Throwable
+     * @param subAccount    Object of {@link SubAccount} instantiated with
+     *                      post fields
+     * @return              The current invoking object.
+     * @throws Throwable    Throws an exception for failed request to Chapa API.
      */
     public Chapa createSubAccount(SubAccount subAccount) throws Throwable {
         responseBody = chapaClient.get(BASE_URL + "/subaccount", SECRETE_KEY);
