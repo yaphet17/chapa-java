@@ -101,6 +101,9 @@ public class Chapa {
      * @throws Throwable
      */
     public Chapa verify(String transactionRef) throws Throwable {
+        if(!Util.notNullAndEmpty(transactionRef)){
+            throw new IllegalArgumentException("Transaction reference can't be null or empty");
+        }
         responseBody = chapaClient.get(BASE_URL + "/transaction/verify/" + transactionRef, SECRETE_KEY);
         return this;
     }
@@ -121,6 +124,7 @@ public class Chapa {
      * @throws Throwable
      */
     public Chapa createSubAccount(SubAccount subAccount) throws Throwable {
+        Util.vali
         responseBody = chapaClient.get(BASE_URL + "/subaccount", SECRETE_KEY);
         return this;
     }
