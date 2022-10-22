@@ -7,16 +7,17 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
+import com.google.gson.annotations.SerializedName;
+
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * The PostData class is an object representation of JSON form data
  * that will be posted to Chapa API.
  */
+
 @Getter
-@Setter
 @Builder
 public class PostData {
 
@@ -29,11 +30,15 @@ public class PostData {
     @NotNull(message = "The email field is required")
     private String email;
     @NotNull(message = "The first_name is field required")
-    private String first_name;
+    @SerializedName("first_name")
+    private String firstName;
     @NotNull(message = "The last_name field is required")
-    private String last_name;
+    @SerializedName("last_name")
+    private String lastName;
     @NotNull(message = "The tx_ref field is required")
-    private String tx_ref;
-    private String callback_url;
+    @SerializedName("tx_ref")
+    private String txRef;
+    @SerializedName("callback_url")
+    private String callbackUrl;
     private Map<String, String> customizations;
 }

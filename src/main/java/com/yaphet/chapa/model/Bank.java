@@ -2,16 +2,23 @@ package com.yaphet.chapa.model;
 
 import java.time.LocalDateTime;
 
-import lombok.Setter;
+import com.google.gson.annotations.SerializedName;
 
-@Setter
+import lombok.Builder;
+import lombok.Getter;
+
+@Getter
+@Builder
 public class Bank {
 
     private String id;
     private String name;
-    private String country_id;
-    private String created_at;
-    private String updated_at;
+    @SerializedName("country_id")
+    private String countryId;
+    @SerializedName("created_at")
+    private String createdAt;
+    @SerializedName("updated_at")
+    private String updatedAt;
 
     public String getId() {
         return id;
@@ -21,15 +28,15 @@ public class Bank {
         return name;
     }
 
-    public String getCountry_id() {
-        return country_id;
+    public String getCountryId() {
+        return countryId;
     }
 
-    public LocalDateTime getCreated_at() {
-        return LocalDateTime.parse(created_at.substring(0, created_at.lastIndexOf(".")));
+    public LocalDateTime getCreatedAt() {
+        return LocalDateTime.parse(createdAt.substring(0, createdAt.lastIndexOf(".")));
     }
 
-    public LocalDateTime getUpdated_at() {
-        return LocalDateTime.parse(updated_at.substring(0, updated_at.lastIndexOf(".")));
+    public LocalDateTime getUpdatedAt() {
+        return LocalDateTime.parse(updatedAt.substring(0, updatedAt.lastIndexOf(".")));
     }
 }

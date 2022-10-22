@@ -39,11 +39,11 @@ class ChapaTest {
         postData = PostData.builder()
                 .amount(new BigDecimal("100"))
                 .currency("ETB")
-                .first_name("Abebe")
-                .last_name("Bikila")
+                .firstName("Abebe")
+                .lastName("Bikila")
                 .email("abebe@bikila.com")
-                .tx_ref("tx-myecommerce12aaa345")
-                .callback_url("https://chapa.co")
+                .txRef("tx-myecommerce12aaa345")
+                .callbackUrl("https://chapa.co")
                 .customizations(customizations)
                 .build();
     }

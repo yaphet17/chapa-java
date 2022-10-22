@@ -9,6 +9,8 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.yaphet.chapa.model.PostData;
+
 class UtilTest {
 
     @Test
@@ -17,11 +19,11 @@ class UtilTest {
         PostData formData = PostData.builder()
                 .amount(new BigDecimal("100"))
                 .currency( "ETB")
-                .first_name("Abebe")
-                .last_name("Bikila")
+                .firstName("Abebe")
+                .lastName("Bikila")
                 .email("abebe@bikila.com")
-                .tx_ref("tx-myecommerce12345")
-                .callback_url("https://chapa.co")
+                .txRef("tx-myecommerce12345")
+                .callbackUrl("https://chapa.co")
 //                .customization_title("I love e-commerce")
 //                .customization_description("It is time to pay")
 //                .customization_logo("My logo")
@@ -40,11 +42,11 @@ class UtilTest {
         customizations.put("customization[logo]", "https://mylogo.com/log.png");
         PostData formData = PostData.builder()
                 .currency( "ETB")
-                .first_name("Abebe")
-                .last_name("Bikila")
+                .firstName("Abebe")
+                .lastName("Bikila")
                 .email("abebe@bikila.com")
-                .tx_ref("tx-myecommerce12345")
-                .callback_url("https://chapa.co")
+                .txRef("tx-myecommerce12345")
+                .callbackUrl("https://chapa.co")
                 .customizations(customizations)
                 .build();
 
@@ -87,5 +89,11 @@ class UtilTest {
 
         // then
         assertThrows(ValidationException.class, () -> Util.validatePostData(formData));
+    }
+
+    @Test
+    public void dev() throws Throwable {
+        Chapa chapa = new Chapa("CHASECK_TEST-LgjzxoU0DE8L9SnPsK4c1wWqFzhlrJVH");
+//        chapa.banks().asList().forEach(bank -> System.out.println(bank.getCountryId()));
     }
 }

@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -17,7 +16,6 @@ import javax.validation.ValidationException;
 import javax.validation.Validator;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.yaphet.chapa.model.Bank;
@@ -88,10 +86,10 @@ public class Util {
                 .amount(new BigDecimal(newMap.get("amount")))
                 .currency(newMap.get("currency"))
                 .email(newMap.get("email"))
-                .first_name(newMap.get("first_name"))
-                .last_name(newMap.get("last_name"))
-                .tx_ref(newMap.get("tx_ref"))
-                .callback_url(newMap.get("callback_url"))
+                .firstName(newMap.get("first_name"))
+                .lastName(newMap.get("last_name"))
+                .txRef(newMap.get("tx_ref"))
+                .callbackUrl(newMap.get("callback_url"))
                 .customizations(jsonToMap(newMap.get("customizations")))
                 .build();
     }

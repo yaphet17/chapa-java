@@ -52,12 +52,12 @@ public class Chapa {
         fields.put("amount", postData.getAmount().toString());
         fields.put("currency", postData.getCurrency());
         fields.put("email", postData.getEmail());
-        fields.put("first_name", postData.getFirst_name());
-        fields.put("last_name", postData.getLast_name());
-        fields.put("tx_ref", postData.getTx_ref());
+        fields.put("first_name", postData.getFirstName());
+        fields.put("last_name", postData.getLastName());
+        fields.put("tx_ref", postData.getTxRef());
 
         Map<String, String> customizations = postData.getCustomizations();
-        String callbackUrl = postData.getCallback_url();
+        String callbackUrl = postData.getCallbackUrl();
 
         if (callbackUrl != null && !callbackUrl.isEmpty()) {
             fields.put("callback_url", callbackUrl);
