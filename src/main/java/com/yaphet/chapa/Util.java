@@ -51,18 +51,18 @@ public class Util {
 
     /**
      *
-     * @param postData Instance of PostData class that contains post
+     * @param data      Object class that contains post
      *                 fields to be validated.
      */
-    private static void validate(PostData postData) {
-        if(postData == null) {
-            throw new IllegalArgumentException("Can't validate null PostData object");
+     static <T>  void validate(T data) {
+        if(data == null) {
+            throw new IllegalArgumentException("Can't validate null object");
         }
 
-        Set<ConstraintViolation<PostData>> violations = VALIDATOR.validate(postData);
+        Set<ConstraintViolation<T>> violations = VALIDATOR.validate(data);
         if(!violations.isEmpty()) {
             StringBuilder errorMsg = new StringBuilder();
-            for (ConstraintViolation<PostData> violation : violations) {
+            for (ConstraintViolation<T> violation : violations) {
                 errorMsg.append(violation.getMessage()).append(", ");
             }
             throw new ValidationException(errorMsg.toString());
