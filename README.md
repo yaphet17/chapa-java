@@ -17,12 +17,12 @@ Visit official [Chapa's API Documentation](https://developer.chapa.co/docs)
     <dependency>
       <groupId>io.github.yaphet17</groupId>
       <artifactId>Chapa</artifactId>
-      <version>1.0.0</version>
+      <version>1.1.0</version>
     </dependency>
 ```
 Or add the below gradle dependency to your `build.gradle` file.
 ```groovy
-    implementation 'io.github.yaphet17:Chapa:1.0.0'
+    implementation 'io.github.yaphet17:Chapa:1.1.0'
 ```
 
 ## Usage
