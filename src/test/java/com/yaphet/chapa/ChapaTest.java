@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -152,35 +151,35 @@ class ChapaTest {
     }
 
     @Test
-    @Disabled
     public void shouldCreateSubAccount_asString() throws Throwable {
         // given
-        String expectedResponse = "{\"data\":null,\"message\":\"Payment not paid yet\",\"status\":\"null\"}";
+        String expectedResponse = "{\"data\":null,\"message\":\"The Bank Code is incorrect please check if it does exist with our getbanks endpoint.\",\"status\":\"failed\"}";
 
         // when
-        when(chapaClient.get(anyString(), anyString())).thenReturn(expectedResponse);
+        when(chapaClient.post(anyString(), anyMap(), anyString())).thenReturn(expectedResponse);
         String actualResponse = underTest.createSubAccount(subAccount).asString();
 
         // then
-        verify(chapaClient).get(anyString(), anyString());
+        verify(chapaClient).post(anyString(), anyMap(), anyString());
         JSONAssert.assertEquals(expectedResponse, actualResponse, true);
     }
 
     @Test
-    @Disabled
     public void shouldCreateSubAccount_asMap() throws Throwable {
         // given
-        String expectedResponse = "{\"data\":null,\"message\":\"Payment not paid yet\",\"status\":\"null\"}";
+        String expectedResponse = "{\"data\":null,\"message\":\"The Bank Code is incorrect please check if it does exist with our getbanks endpoint.\",\"status\":\"failed\"}";
+        Map<String, String> expectedMap = new HashMap<>();
+        expectedMap.put("data", null);
+        expectedMap.put("message", "The Bank Code is incorrect please check if it does exist with our getbanks endpoint.");
+        expectedMap.put("status", "failed");
 
         // when
-        when(chapaClient.get(anyString(), anyString())).thenReturn(expectedResponse);
-        String actualResponse = underTest.createSubAccount(subAccount).asString();
+        when(chapaClient.post(anyString(), anyMap(), anyString())).thenReturn(expectedResponse);
+        Map<String, String> actualMap = underTest.createSubAccount(subAccount).asMap();
 
         // then
-        verify(chapaClient).get(anyString(), anyString());
-        JSONAssert.assertEquals(expectedResponse, actualResponse, true);
+        verify(chapaClient).post(anyString(), anyMap(), anyString());
+        JSONAssert.assertEquals(gson.toJson(expectedMap), gson.toJson(actualMap), true);
     }
-
-
 
 }

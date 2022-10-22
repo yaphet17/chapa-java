@@ -127,7 +127,16 @@ public class Chapa {
      * @throws Throwable    Throws an exception for failed request to Chapa API.
      */
     public Chapa createSubAccount(SubAccount subAccount) throws Throwable {
-        responseBody = chapaClient.get(BASE_URL + "/subaccount", SECRETE_KEY);
+        Util.validate(subAccount);
+
+        Map<String, Object> fields = new HashMap<>();
+        fields.put("business_name", subAccount.getBusinessName());
+        fields.put("account_name", subAccount.getAccountName());
+        fields.put("account_number", subAccount.getAccountNumber());
+        fields.put("bank_code", subAccount.getBankCode());
+        fields.put("split_type", subAccount.getSplitType().name().toLowerCase());
+        fields.put("split_value", subAccount.getSplitValue());
+        responseBody = chapaClient.post(BASE_URL + "/subaccount", fields,  SECRETE_KEY);
         return this;
     }
 
