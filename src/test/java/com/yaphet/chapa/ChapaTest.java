@@ -259,7 +259,7 @@ class ChapaTest {
         String formData = gson.toJson(postData);
         System.out.println(formData);
 
-        Chapa chapa = new Chapa("CHASECK_TEST-LgjzxoU0DE8L9SnPsK4c1wWqFzhlrJVH");
+        Chapa chapa = new Chapa("");
         List<Bank> banks = chapa.banks();
         banks.forEach(bank -> System.out.println("Bank name: " + bank.getName() + " Bank Code: " + bank.getId()));
         System.out.println("Create SubAccount response: " + chapa.createSubAccount(subAccount).asString());
