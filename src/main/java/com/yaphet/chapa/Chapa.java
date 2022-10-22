@@ -146,6 +146,18 @@ public class Chapa {
     }
 
     /**
+     *
+     * @param jsonData     JSON data which contains post fields.
+     * @return             The current invoking object.
+     * @throws Throwable   Throws an exception for failed request to Chapa API.
+     */
+    public Chapa createSubAccount(String jsonData) throws Throwable {
+        Util.validate(Util.mapJsonToSubAccount(jsonData));
+        responseBody = chapaClient.post(BASE_URL + "/subaccount", jsonData,  SECRETE_KEY);
+        return this;
+    }
+
+    /**
      * @return          String representation of the response JSON data.
      */
     public String asString() {
