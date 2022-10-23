@@ -72,8 +72,12 @@ class UtilTest {
                 "'last_name': 'Bikila'," +
                 "'tx_ref': 'tx-myecommerce12345'," +
                 "'callback_url': 'https://chapa.co'," +
-                "'subaccount[id]': 'testSubAccountId'," +
-                "'customizations':{'customization[title]':'E-commerce','customization[description]':'It is time to pay','customization[logo]':'https://mylogo.com/log.png'}" +
+                "'subaccount[id]': 'ACCT_xxxxxxxxx'," +
+                "'customizations':{" +
+                "       'customization[title]':'E-commerce'," +
+                "       'customization[description]':'It is time to pay'," +
+                "       'customization[logo]':'https://mylogo.com/log.png'" +
+                "   }" +
                 " }";
 
 
