@@ -21,8 +21,8 @@ Unofficial Java package for Chapa Payment Gateway.
 - Well tested and documented code.
 
 ## Table of Contents
-1. [Installation](#installation)
-2. [Documentation](#documentation)
+1. [Documentation](#documentation)
+2. [Installation](#installation)
 3. [Usage](#usage)
 4. [Contribution](#contribution)
 5. [Example](#example)
