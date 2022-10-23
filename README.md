@@ -10,10 +10,13 @@
 
 Unofficial Java package for Chapa Payment Gateway.
 
+## Description
+
+
 ## Table of Contents
 1. [Installation](#installation)
 2. [Usage](#usage)
-3. [Contributing](#contributing)
+3. [Contribution](#contribution)
 4. [Example](#example)
 5. [License](#license)
 
