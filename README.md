@@ -187,6 +187,8 @@ public class ChapaExample {
       System.out.println("Initialize response: " + chapa.initialize(postData).asString());
       // verify payment
       System.out.println("Verify response: " + chapa.verify(postData.getTxRef()).asString());
+      }
+ }
 ```
 ## Contribution
 If you find any bug or have any suggestion, please feel free to open an issue or pull request.
