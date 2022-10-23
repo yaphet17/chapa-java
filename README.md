@@ -10,26 +10,23 @@
 
 Unofficial Java package for Chapa Payment Gateway.
 
-## Description
-
-
-## Table of Contents
-1. [Installation](#installation)
-2. [Usage](#usage)
-3. [Contribution](#contribution)
-4. [Example](#example)
-5. [License](#license)
-
 ## What's new in this version
 - You can now implement `ChapaClient` interface and create your own custom implementation
   to use your favorite HTTP client.
-- Includes split payment feature added by Chapa. You can now get list of banks, create
+- Includes split payment feature added by Chapa. You can now get list of supported banks, create
   subaccount and perform a split payment. See [Split Payment](https://developer.chapa.co/docs/split-payment/) documentation for more details.
 - Additional utility methods to help you to generate a convenient token for your transactions, to map json string
   to `PostData` object etc.
 - Bug fixes and improvements.
-- Well tested code.
+- Well tested and documented code.
 
+## Table of Contents
+1. [Installation](#installation)
+2. [Documentation](#documentation)
+3. [Usage](#usage)
+4. [Contribution](#contribution)
+5. [Example](#example)
+6. [License](#license)
 
 ## Documentation
 Visit official [Chapa's API Documentation](https://developer.chapa.co/docs)
