@@ -1,12 +1,14 @@
 package com.yaphet.chapa;
 
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
-import org.apache.http.HttpHeaders;
-
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import com.yaphet.chapa.client.ChapaClient;
+import com.yaphet.chapa.client.ChapaClientImpl;
+import com.yaphet.chapa.model.Bank;
+import com.yaphet.chapa.model.PostData;
+import com.yaphet.chapa.model.SubAccount;
 
 /**
  * The Chapa class is responsible for making GET and POST request to Chapa API
@@ -14,103 +16,156 @@ import java.util.Map;
  */
 public class Chapa {
 
-    private static HttpResponse<JsonNode> response;
-    private static final String authorizationHeader = HttpHeaders.AUTHORIZATION;
-    private static final String acceptEncodingHeader = HttpHeaders.ACCEPT_ENCODING;
     private static String responseBody;
-    private final String BASE_URL = "https://api.chapa.co/v1";
+    private final ChapaClient chapaClient;
+    private final String VERSION = "v1";
+    private final String BASE_URL = "https://api.chapa.co/" + VERSION;
     private final String SECRETE_KEY;
 
     /**
-     *
-     * @param secreteKey    A secrete key provided from Chapa.
+     * @param secreteKey A secrete key provided from Chapa.
      */
-    public Chapa(String secreteKey){
+    public Chapa(String secreteKey) { // TODO: consider deprecating this since it makes it hard to test this class
+        this.SECRETE_KEY = secreteKey;
+        this.chapaClient = new ChapaClientImpl();
+    }
+
+    /**
+     * @param secreteKey  A secrete key provided from Chapa.
+     * @param chapaClient Implementation of {@link com.yaphet.chapa.client.ChapaClient}
+     *                    which is used to make API calls to Chapa.
+     */
+    public Chapa(ChapaClient chapaClient, String secreteKey) {
+        this.chapaClient = chapaClient;
         this.SECRETE_KEY = secreteKey;
     }
 
-    /**
-     *
-     * @param postData  object of {@link com.yaphet.chapa.PostData} instantiated with
-     *                  post fields.
-     * @return          the current invoking object.
-     */
-    public Chapa initialize(PostData postData) {
-        Util.validatePostData(postData);
 
-        try {
-            response = Unirest.post(BASE_URL + "/transaction/initialize")
-                    .header(acceptEncodingHeader,"application/json")
-                    .header(authorizationHeader, "Bearer " + SECRETE_KEY)
-                    .field( "amount", postData.getAmount().toString())
-                    .field( "currency", postData.getCurrency())
-                    .field("email", postData.getEmail())
-                    .field("first_name", postData.getFirst_name())
-                    .field("last_name", postData.getLast_name())
-                    .field("tx_ref", postData.getTx_ref())
-                    .field("customization[title]",  postData.getCustomization_title())
-                    .field("customization[description]", postData.getCustomization_description())
-                    .asJson();
-        } catch (UnirestException e) {
-            throw new RuntimeException(e);
+    /**
+     * @param postData Object of {@link PostData} instantiated with
+     *                 post fields.
+     * @return The current invoking object.
+     * @throws Throwable Throws an exception for failed request to Chapa API.
+     */
+    public Chapa initialize(PostData postData) throws Throwable { // TODO: consider creating custom exception handler and wrap any exception thrown by http client
+        Util.validate(postData);
+
+        Map<String, Object> fields = new HashMap<>();
+        fields.put("amount", postData.getAmount().toString());
+        fields.put("currency", postData.getCurrency());
+        fields.put("email", postData.getEmail());
+        fields.put("first_name", postData.getFirstName());
+        fields.put("last_name", postData.getLastName());
+        fields.put("tx_ref", postData.getTxRef());
+
+        Map<String, String> customizations = postData.getCustomizations();
+        String callbackUrl = postData.getCallbackUrl();
+        String subAccountId = postData.getSubAccountId();
+
+        if (Util.notNullAndEmpty(subAccountId)) {
+            fields.put("subaccount[id]", subAccountId);
         }
 
-        responseBody = response.getBody().toString();
-        return this;
-    }
-
-    /**
-     *
-     * @param jsonData  JSON data which contains post fields.
-     * @return          the current invoking object.
-     * @throws          UnirestException if a post request to Chapa API
-     *                  fails for any reason.
-     */
-
-    public Chapa initialize(String jsonData) throws UnirestException {
-        Util.validatePostData(jsonData);
-
-        response = Unirest.post(BASE_URL + "/transaction/initialize")
-                .header(acceptEncodingHeader,"application/json")
-                .header(authorizationHeader, "Bearer " + SECRETE_KEY)
-                .body(jsonData)
-                .asJson();
-        responseBody = response.getBody().toString();
-        return this;
-    }
-
-    /**
-     *
-     * @param transactionRef   unique transaction reference which was associated
-     *                         with tx_ref field in post data.
-     * @return                 the current invoking object.
-     */
-    public Chapa verify(String transactionRef) {
-        try {
-            response = Unirest.get(BASE_URL + "/transaction/verify/" + transactionRef)
-                    .header(acceptEncodingHeader,"application/json")
-                    .header(authorizationHeader, "Bearer " + SECRETE_KEY)
-                    .asJson();
-        } catch (UnirestException e) {
-            throw new RuntimeException(e);
+        if (Util.notNullAndEmpty(callbackUrl)) {
+            fields.put("callback_url", callbackUrl);
         }
-        responseBody = response.getBody().toString();
+
+        if (customizations != null && !customizations.isEmpty()) {
+            // TODO: consider directly adding all values to fields map
+            if (customizations.containsKey("customization[title]") && Util.notNullAndEmpty(customizations.get("customization[title]"))) {
+                fields.put("customization[title]", customizations.get("customization[title]"));
+            }
+
+            if (customizations.containsKey("customization[description]") && Util.notNullAndEmpty(customizations.get("customization[description]"))) {
+                fields.put("customization[description]", customizations.get("customization[description]"));
+            }
+
+            if (customizations.containsKey("customization[logo]") && Util.notNullAndEmpty(customizations.get("customization[logo]"))) {
+                fields.put("customization[logo]", customizations.get("customization[logo]"));
+            }
+        }
+
+        responseBody = chapaClient.post(BASE_URL + "/transaction/initialize", fields, SECRETE_KEY);
         return this;
     }
 
     /**
-     *
-     * @return  String representation of the response JSON data.
+     * @param jsonData JSON data which contains post fields.
+     * @return The current invoking object.
+     * @throws Throwable Throws an exception for failed request to Chapa API.
      */
-    public String asString(){
+
+    public Chapa initialize(String jsonData) throws Throwable {
+        Util.validate(Util.mapJsonToPostData(jsonData));
+        responseBody = chapaClient.post(BASE_URL + "/transaction/initialize", jsonData, SECRETE_KEY);
+        return this;
+    }
+
+    /**
+     * @param transactionRef Unique transaction reference which was associated
+     *                       with tx_ref field in post data.
+     * @return The current invoking object.
+     * @throws Throwable Throws an exception for failed request to Chapa API.
+     */
+    public Chapa verify(String transactionRef) throws Throwable {
+        if (!Util.notNullAndEmpty(transactionRef)) {
+            throw new IllegalArgumentException("Transaction reference can't be null or empty");
+        }
+        responseBody = chapaClient.get(BASE_URL + "/transaction/verify/" + transactionRef, SECRETE_KEY);
+        return this;
+    }
+
+    /**
+     * @return List of banks supported by Chapa
+     * @throws Throwable Throws an exception for failed request to Chapa API.
+     */
+    public List<Bank> banks() throws Throwable {
+        responseBody = chapaClient.get(BASE_URL + "/banks", SECRETE_KEY);
+        return Util.extractBanks(responseBody);
+    }
+
+    /**
+     * @param subAccount Object of {@link SubAccount} instantiated with
+     *                   post fields
+     * @return The current invoking object.
+     * @throws Throwable Throws an exception for failed request to Chapa API.
+     */
+    public Chapa createSubAccount(SubAccount subAccount) throws Throwable {
+        Util.validate(subAccount);
+
+        Map<String, Object> fields = new HashMap<>();
+        fields.put("business_name", subAccount.getBusinessName());
+        fields.put("account_name", subAccount.getAccountName());
+        fields.put("account_number", subAccount.getAccountNumber());
+        fields.put("bank_code", subAccount.getBankCode());
+        fields.put("split_type", subAccount.getSplitType().name().toLowerCase());
+        fields.put("split_value", subAccount.getSplitValue());
+        responseBody = chapaClient.post(BASE_URL + "/subaccount", fields, SECRETE_KEY);
+        return this;
+    }
+
+    /**
+     * @param jsonData JSON data which contains post fields.
+     * @return The current invoking object.
+     * @throws Throwable Throws an exception for failed request to Chapa API.
+     */
+    public Chapa createSubAccount(String jsonData) throws Throwable {
+        Util.validate(Util.mapJsonToSubAccount(jsonData));
+        responseBody = chapaClient.post(BASE_URL + "/subaccount", jsonData, SECRETE_KEY);
+        return this;
+    }
+
+    /**
+     * @return String representation of the response JSON data.
+     */
+    public String asString() {
         return responseBody;
     }
 
     /**
-     *
-     * @return  Map representation of the response JSON data.
+     * @return Map representation of the response JSON data.
      */
-    public Map<String, String> asMap(){
+    public Map<String, String> asMap() {
         return Util.jsonToMap(responseBody);
     }
 

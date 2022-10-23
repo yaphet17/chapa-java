@@ -6,11 +6,11 @@
 
     <groupId>io.github.yaphet17</groupId>
     <artifactId>Chapa</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <packaging>jar</packaging>
 
     <name>Chapa</name>
-    <description>Publish open source library for Chapa payment gateway with OSSRH</description>
+    <description>Java package for Chapa Payment Gateway</description>
     <url>https://github.com/yaphet17/chapa-java</url>
     <developers>
         <developer>
@@ -70,9 +70,28 @@
             <version>3.0.0</version>
         </dependency>
         <dependency>
-            <groupId>io.github.cdimascio</groupId>
-            <artifactId>dotenv-java</artifactId>
-            <version>2.2.4</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.9.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>4.6.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-inline</artifactId>
+            <version>3.8.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.skyscreamer</groupId>
+            <artifactId>jsonassert</artifactId>
+            <version>1.5.0</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -161,7 +180,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
+                    <source>8</source>
                 </configuration>
             </plugin>
             <plugin>

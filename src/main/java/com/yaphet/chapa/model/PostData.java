@@ -1,20 +1,23 @@
-package com.yaphet.chapa;
+package com.yaphet.chapa.model;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import java.math.BigDecimal;
+import java.util.Map;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
+
+import com.google.gson.annotations.SerializedName;
+
+import lombok.Builder;
+import lombok.Getter;
 
 /**
  * The PostData class is an object representation of JSON form data
  * that will be posted to Chapa API.
  */
+
 @Getter
-@Setter
 @Builder
 public class PostData {
 
@@ -27,13 +30,17 @@ public class PostData {
     @NotNull(message = "The email field is required")
     private String email;
     @NotNull(message = "The first_name is field required")
-    private String first_name;
+    @SerializedName("first_name")
+    private String firstName;
     @NotNull(message = "The last_name field is required")
-    private String last_name;
+    @SerializedName("last_name")
+    private String lastName;
     @NotNull(message = "The tx_ref field is required")
-    private String tx_ref;
-    private String callback_url;
-    private String customization_title;
-    private String customization_description;
-    private String customization_logo;
+    @SerializedName("tx_ref")
+    private String txRef;
+    @SerializedName("callback_url")
+    private String callbackUrl;
+    @SerializedName("subaccounts[id]")
+    private String subAccountId;
+    private Map<String, String> customizations;
 }
