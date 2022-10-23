@@ -17,7 +17,7 @@ Unofficial Java package for Chapa Payment Gateway.
   subaccount and perform a split payment. See [Split Payment](https://developer.chapa.co/docs/split-payment/) documentation for more details.
 - Additional utility methods to help you to generate a convenient token for your transactions, to map json string
   to `PostData` object etc.
-- Bug fixes and improvements.
+- Bug fixes and design improvements.
 - Well tested and documented code.
 
 ## Table of Contents
@@ -65,15 +65,16 @@ Map<String, String> customizations = new HashMap<>();
 customizations.put("customization[title]", "E-commerce");
 customizations.put("customization[description]", "It is time to pay");
 customizations.put("customization[logo]", "https://mylogo.com/log.png");
-PostData formData = PostData.builder()
+PostData postData = PostData.builder()
         .amount(new BigDecimal("100"))
-        .currency( "ETB")
-        .first_name("Abebe")
-        .last_name("Bikila")
+        .currency("ETB")
+        .firstName("Abebe")
+        .lastName("Bikila")
         .email("abebe@bikila.com")
-        .tx_ref("tx-myecommerce12345")
-        .callback_url("https://chapa.co")
-        .customization(customizations)
+        .txRef(Util.generateToken())
+        .callbackUrl("https://chapa.co")
+        .subAccountId("ACCT_xxxxxxxxx")
+        .customizations(customizations)
         .build();
 ```
 Or, you can use a string JSON data.
