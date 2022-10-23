@@ -20,6 +20,16 @@ Unofficial Java package for Chapa Payment Gateway.
 4. [Example](#example)
 5. [License](#license)
 
+## What's new in this version
+- You can now implement `ChapaClient` interface and create your own custom implementation
+  to use your favorite HTTP client.
+- Includes split payment feature added by Chapa. You can now get list of banks, create
+  subaccount and perform a split payment. See [Split Payment](https://developer.chapa.co/docs/split-payment/) documentation for more details.
+- Additional utility methods to help you to generate a convenient token for your transactions, to map json string
+  to `PostData` object etc.
+- Bug fixes and improvements.
+- Well tested code.
+
 
 ## Documentation
 Visit official [Chapa's API Documentation](https://developer.chapa.co/docs)
@@ -36,16 +46,6 @@ Or add the below gradle dependency to your `build.gradle` file.
 ```groovy
     implementation 'io.github.yaphet17:Chapa:1.1.0'
 ```
-
-## What's new in this version
-- You can now implement `ChapaClient` interface and create your own custom implementation
-  to use your favorite HTTP client.
-- Includes split payment feature added by Chapa. You can now get list of banks, create
-  subaccount and perform a split payment. See [Split Payment](https://developer.chapa.co/docs/split-payment/) documentation for more details.
-- Additional utility methods to help you to generate a convenient token for your transactions, to map json string
-  to `PostData` object etc.
-- Bug fixes and improvements.
-- Well tested code.
 
 ## Usage
 
