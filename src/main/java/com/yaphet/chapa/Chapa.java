@@ -8,6 +8,7 @@ import com.yaphet.chapa.client.ChapaClient;
 import com.yaphet.chapa.client.ChapaClientImpl;
 import com.yaphet.chapa.model.Bank;
 import com.yaphet.chapa.model.PostData;
+import com.yaphet.chapa.model.ResponseData;
 import com.yaphet.chapa.model.SubAccount;
 
 /**
@@ -17,6 +18,7 @@ import com.yaphet.chapa.model.SubAccount;
 public class Chapa {
 
     private static String responseBody;
+    private static int statusCode;
     private final ChapaClient chapaClient;
     private final String VERSION = "v1";
     private final String BASE_URL = "https://api.chapa.co/" + VERSION;
@@ -32,7 +34,7 @@ public class Chapa {
 
     /**
      * @param secreteKey  A secrete key provided from Chapa.
-     * @param chapaClient Implementation of {@link com.yaphet.chapa.client.ChapaClient}
+     * @param chapaClient Implementation of {@link ChapaClient}
      *                    which is used to make API calls to Chapa.
      */
     public Chapa(ChapaClient chapaClient, String secreteKey) {
@@ -98,6 +100,7 @@ public class Chapa {
     public Chapa initialize(String jsonData) throws Throwable {
         Util.validate(Util.mapJsonToPostData(jsonData));
         responseBody = chapaClient.post(BASE_URL + "/transaction/initialize", jsonData, SECRETE_KEY);
+        statusCode = chapaClient.getStatusCode();
         return this;
     }
 
@@ -112,6 +115,7 @@ public class Chapa {
             throw new IllegalArgumentException("Transaction reference can't be null or empty");
         }
         responseBody = chapaClient.get(BASE_URL + "/transaction/verify/" + transactionRef, SECRETE_KEY);
+        statusCode = chapaClient.getStatusCode();
         return this;
     }
 
@@ -121,6 +125,8 @@ public class Chapa {
      */
     public List<Bank> banks() throws Throwable {
         responseBody = chapaClient.get(BASE_URL + "/banks", SECRETE_KEY);
+        statusCode = chapaClient.getStatusCode();
+
         return Util.extractBanks(responseBody);
     }
 
@@ -141,6 +147,8 @@ public class Chapa {
         fields.put("split_type", subAccount.getSplitType().name().toLowerCase());
         fields.put("split_value", subAccount.getSplitValue());
         responseBody = chapaClient.post(BASE_URL + "/subaccount", fields, SECRETE_KEY);
+        statusCode = chapaClient.getStatusCode();
+
         return this;
     }
 
@@ -152,6 +160,8 @@ public class Chapa {
     public Chapa createSubAccount(String jsonData) throws Throwable {
         Util.validate(Util.mapJsonToSubAccount(jsonData));
         responseBody = chapaClient.post(BASE_URL + "/subaccount", jsonData, SECRETE_KEY);
+        statusCode = chapaClient.getStatusCode();
+
         return this;
     }
 
@@ -163,10 +173,22 @@ public class Chapa {
     }
 
     /**
+     * @deprecated This method is outdated and should no longer be used.
+     * Instead, use the {@link #asResponseData()} or {@link #asString()} method.
+     *
      * @return Map representation of the response JSON data.
      */
+    @Deprecated
     public Map<String, String> asMap() {
         return Util.jsonToMap(responseBody);
+    }
+
+    /**
+     * @return {@link ResponseData} representation of the response JSON data.
+     */
+    public ResponseData asResponseData() {
+        return Util.jsonToResponseData(responseBody);
+
     }
 
 }

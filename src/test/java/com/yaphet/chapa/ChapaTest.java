@@ -1,6 +1,7 @@
 package com.yaphet.chapa;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.yaphet.chapa.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -22,10 +24,6 @@ import org.skyscreamer.jsonassert.JSONAssert;
 
 import com.google.gson.Gson;
 import com.yaphet.chapa.client.ChapaClientImpl;
-import com.yaphet.chapa.model.Bank;
-import com.yaphet.chapa.model.PostData;
-import com.yaphet.chapa.model.SplitType;
-import com.yaphet.chapa.model.SubAccount;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -111,6 +109,26 @@ class ChapaTest {
         // then
         verify(chapaClient).post(anyString(), anyMap(), anyString());
         assertEquals(expectedMap.toString(), actualMap.toString());
+    }
+
+    @Test
+    public void shouldInitializeTransaction_asResponseData() throws Throwable {
+        // given
+        ResponseData expectedResponseData = new ResponseData()
+                .setMessage("Transaction reference has been used before")
+                .setStatus("failed")
+                .setData(null);
+
+        String expectedResponse = "{\"data\":null,\"message\":\"Transaction reference has been used before\",\"status\":\"failed\"}";
+
+        // when
+        when(chapaClient.post(anyString(), anyMap(), anyString())).thenReturn(expectedResponse);
+        ResponseData actualResponseData = underTest.initialize(postData).asResponseData();
+
+        // then
+        verify(chapaClient).post(anyString(), anyMap(), anyString());
+        JSONAssert.assertEquals(gson.toJson(expectedResponseData), gson.toJson(actualResponseData), true);
+
     }
 
     @Test
