@@ -60,7 +60,7 @@ public class ResponseData {
         return this;
     }
 
-    static class Data {
+    public static class Data {
 
         @SerializedName("checkout_url")
         private String checkOutUrl;
