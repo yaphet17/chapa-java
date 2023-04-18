@@ -18,10 +18,7 @@ import javax.validation.Validator;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import com.yaphet.chapa.model.Bank;
-import com.yaphet.chapa.model.PostData;
-import com.yaphet.chapa.model.SplitType;
-import com.yaphet.chapa.model.SubAccount;
+import com.yaphet.chapa.model.*;
 
 /**
  * The Util class serves as a helper class for the main {@link com.yaphet.chapa.Chapa} class.
@@ -110,6 +107,10 @@ public class Util {
      */
     public static Map<String, String> jsonToMap(String jsonData) {
         return JSON_MAPPER.fromJson(jsonData, Map.class);
+    }
+
+    public static ResponseData jsonToResponseData(String jsonData) {
+        return JSON_MAPPER.fromJson(jsonData, ResponseData.class);
     }
 
     static List<Bank> extractBanks(String jsonData) {
