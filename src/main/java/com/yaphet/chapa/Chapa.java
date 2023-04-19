@@ -187,7 +187,9 @@ public class Chapa {
      * @return {@link ResponseData} representation of the response JSON data.
      */
     public ResponseData asResponseData() {
-        return Util.jsonToResponseData(responseBody);
+        ResponseData responseData = Util.jsonToResponseData(responseBody);
+        responseData.setStatusCode(statusCode);
+        return responseData;
 
     }
 
