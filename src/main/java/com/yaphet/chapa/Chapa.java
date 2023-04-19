@@ -88,6 +88,8 @@ public class Chapa {
         }
 
         responseBody = chapaClient.post(BASE_URL + "/transaction/initialize", fields, SECRETE_KEY);
+        statusCode = chapaClient.getStatusCode();
+
         return this;
     }
 
@@ -190,7 +192,6 @@ public class Chapa {
         ResponseData responseData = Util.jsonToResponseData(responseBody);
         responseData.setStatusCode(statusCode);
         return responseData;
-
     }
 
 }

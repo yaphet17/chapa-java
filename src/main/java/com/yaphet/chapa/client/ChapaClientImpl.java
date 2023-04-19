@@ -24,8 +24,10 @@ public class ChapaClientImpl implements ChapaClient {
                 .header(authorizationHeader, "Bearer " + secreteKey)
                 .fields(fields);
 
-        statusCode = request.asJson().getStatus();
-        return request.asJson().getBody().toString();
+        HttpResponse<JsonNode> jsonNodeHttpResponse = request.asJson();
+
+        statusCode = jsonNodeHttpResponse.getStatus();
+        return jsonNodeHttpResponse.getBody().toString();
     }
 
     @Override
@@ -35,8 +37,10 @@ public class ChapaClientImpl implements ChapaClient {
                 .header(authorizationHeader, "Bearer " + secreteKey)
                 .body(body);
 
-        statusCode = request.asJson().getStatus();
-        return request.asJson().getBody().toString();
+        HttpResponse<JsonNode> jsonNodeHttpResponse = request.asJson();
+
+        statusCode = jsonNodeHttpResponse.getStatus();
+        return jsonNodeHttpResponse.getBody().toString();
     }
 
     @Override
