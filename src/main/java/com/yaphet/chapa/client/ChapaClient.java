@@ -2,6 +2,11 @@ package com.yaphet.chapa.client;
 
 import java.util.Map;
 
+/**
+ * <p>A client to interact with Chapa API.</p><br>
+ *
+ * Implement this interface to create your own client or use the default implementation {@link ChapaClientImpl}.
+ */
 public interface ChapaClient {
 
 

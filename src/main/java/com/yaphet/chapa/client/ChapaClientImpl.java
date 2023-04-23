@@ -10,6 +10,13 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.request.body.MultipartBody;
 import com.mashape.unirest.request.body.RequestBodyEntity;
 
+/**
+ * <p>A default implementation of {@link ChapaClient}.</p><br>
+ *
+ * <p>Uses Unirest to make HTTP requests.</p>
+ *
+ * @see <a href="http://kong.github.io/unirest-java/">Unirest</a>
+ */
 public class ChapaClientImpl implements ChapaClient {
 
     private static final String authorizationHeader = HttpHeaders.AUTHORIZATION;
