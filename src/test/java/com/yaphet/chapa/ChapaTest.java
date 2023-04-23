@@ -91,11 +91,9 @@ class ChapaTest {
         InitializeResponseData expectedResponseData = new InitializeResponseData()
                 .setMessage("Transaction reference has been used before")
                 .setStatus("failed")
-                .setData(null);
+                .setData(new InitializeResponseData.Data().setCheckOutUrl("https://checkout.chapa.co/checkout/payment/somestring"));
 
-        expectedResponseData.getData();
-
-        String expectedResponse = "{\"data\":null,\"message\":\"Transaction reference has been used before\",\"status\":\"failed\"}";
+        String expectedResponse = "{\"data\":{\"checkout_url\":\"https://checkout.chapa.co/checkout/payment/somestring\"},\"message\":\"Transaction reference has been used before\",\"status\":\"failed\"}";
 
         // when
         when(chapaClient.post(anyString(), anyMap(), anyString())).thenReturn(expectedResponse);
@@ -104,7 +102,6 @@ class ChapaTest {
         // then
         verify(chapaClient).post(anyString(), anyMap(), anyString());
         JSONAssert.assertEquals(gson.toJson(expectedResponseData), gson.toJson(actualResponseData), false);
-
     }
 
     @Test
