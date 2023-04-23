@@ -1,4 +1,4 @@
-package com.yaphet.chapa;
+package com.yaphet.chapa.utility;
 
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
@@ -89,7 +89,7 @@ public class Util {
         return JSON_MAPPER.fromJson(jsonData, SubAccountResponseData.class);
     }
 
-    static List<Bank> extractBanks(String jsonData) {
+    public static List<Bank> extractBanks(String jsonData) {
         JsonObject jsonObject = JSON_MAPPER.fromJson(jsonData, JsonObject.class);
         Type bankListType = new TypeToken<List<Bank>>() {}.getType();
 
@@ -104,7 +104,7 @@ public class Util {
         return UUID.randomUUID().toString().substring(0, 8) + "_" + FORMATTER.format(now);
     }
 
-    static boolean notNullAndEmpty(String value) {
+    public static boolean notNullAndEmpty(String value) {
         return value != null && !value.isEmpty();
     }
 }

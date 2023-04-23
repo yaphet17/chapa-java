@@ -1,8 +1,11 @@
 package com.yaphet.chapa.model;
 
+import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
+import com.yaphet.chapa.utility.LocalDateTimeDeserializer;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 public class VerifyResponseData extends ResponseData {
 
@@ -56,13 +59,16 @@ public class VerifyResponseData extends ResponseData {
       private String type;
       private String status;
       private String reference;
+      @SerializedName("tx_ref")
       private String txRef;
       private Customization customization;
       private String meta;
       @SerializedName("created_at")
-      private String createdAt;
+      @JsonAdapter(LocalDateTimeDeserializer.class)
+      private LocalDateTime createdAt;
       @SerializedName("updated_at")
-      private String updatedAt;
+      @JsonAdapter(LocalDateTimeDeserializer.class)
+      private LocalDateTime updatedAt;
 
       @SerializedName("first_name")
       public String getFirstName() {
@@ -191,20 +197,20 @@ public class VerifyResponseData extends ResponseData {
           return this;
       }
 
-      public String getCreatedAt() {
+      public LocalDateTime getCreatedAt() {
           return createdAt;
       }
 
-      public VerifyResponseData.Data setCreatedAt(String createdAt) {
+      public VerifyResponseData.Data setCreatedAt(LocalDateTime createdAt) {
           this.createdAt = createdAt;
           return this;
       }
 
-      public String getUpdatedAt() {
+      public LocalDateTime getUpdatedAt() {
           return updatedAt;
       }
 
-      public VerifyResponseData.Data setUpdatedAt(String updatedAt) {
+      public VerifyResponseData.Data setUpdatedAt(LocalDateTime updatedAt) {
           this.updatedAt = updatedAt;
           return this;
       }
