@@ -9,6 +9,9 @@ import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Custom deserializer for LocalDateTime objects.
+ */
 public class LocalDateTimeDeserializer implements JsonDeserializer<LocalDateTime> {
 
     @Override

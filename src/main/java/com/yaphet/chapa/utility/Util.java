@@ -15,7 +15,7 @@ import com.google.gson.reflect.TypeToken;
 import com.yaphet.chapa.model.*;
 
 /**
- * The Util class serves as a helper class for the main {@link com.yaphet.chapa.Chapa} class.
+ * The <code>Util</code> class serves as a helper class for the main {@link com.yaphet.chapa.Chapa} class.
  */
 public class Util {
 
@@ -24,12 +24,11 @@ public class Util {
     private final static Gson JSON_MAPPER = new Gson();
 
     /**
-     * @param jsonData JSON data that contains post fields to be mapped
-     *                 to PostData object.
-     * @return A PostData object which contains post fields of the
+     * @param jsonData A json string to be mapped to a {@link PostData} object.
+     * @return A {@link PostData} object which contains post fields of the
      * provided JSON data.
      */
-    public static PostData mapJsonToPostData(String jsonData) {
+    public static PostData jsonToPostData(String jsonData) {
         if (!notNullAndEmpty(jsonData)) {
             throw new IllegalArgumentException("Can't map null or empty json to PostData object");
         }
@@ -55,12 +54,11 @@ public class Util {
     }
 
     /**
-     * @param jsonData JSON data that contains post fields to be mapped
-     *                 to PostData object.
-     * @return A PostData object which contains post fields of the
+     * @param jsonData A json string to be mapped to a {@link SubAccount} object.
+     * @return A {@link SubAccount} object which contains post fields of the
      * provided JSON data.
      */
-    public static SubAccount mapJsonToSubAccount(String jsonData) {
+    public static SubAccount jsonToSubAccount(String jsonData) {
         if (!notNullAndEmpty(jsonData)) {
             throw new IllegalArgumentException("Can't map null or empty json to SubAccount object");
         }
@@ -69,7 +67,7 @@ public class Util {
     }
 
     /**
-     * @param jsonData JSON data to be mapped to Map object.
+     * @param jsonData a json string to be mapped to a Map object.
      * @return A Map object which contains post fields of the provided
      * JSON data.
      */
@@ -77,18 +75,37 @@ public class Util {
         return JSON_MAPPER.fromJson(jsonData, Map.class);
     }
 
+    /**
+     * @param jsonData a json string to be mapped to an {@link InitializeResponseData} object.
+     * @return An {@link InitializeResponseData} object which contains response fields of the provided
+     * JSON data.
+     */
     public static InitializeResponseData jsonToInitializeResponseData(String jsonData) {
         return JSON_MAPPER.fromJson(jsonData, InitializeResponseData.class);
     }
 
+    /**
+     * @param jsonData a json string to be mapped to a {@link VerifyResponseData} object.
+     * @return A {@link VerifyResponseData} object which contains response fields of the provided
+     * JSON data.
+     */
     public static VerifyResponseData jsonToVerifyResponseData(String jsonData) {
         return JSON_MAPPER.fromJson(jsonData, VerifyResponseData.class);
     }
 
+    /**
+     * @param jsonData a json string to be mapped to a {@link SubAccountResponseData} object.
+     * @return A {@link SubAccountResponseData} object which contains response fields of the provided
+     * JSON data.
+     */
     public static SubAccountResponseData jsonToSubAccountResponseData(String jsonData) {
         return JSON_MAPPER.fromJson(jsonData, SubAccountResponseData.class);
     }
 
+    /**
+     * @param jsonData a json string to be mapped to a list of {@link Bank} objects.
+     * @return A list of {@link Bank} objects each containing details of a bank.
+     */
     public static List<Bank> extractBanks(String jsonData) {
         JsonObject jsonObject = JSON_MAPPER.fromJson(jsonData, JsonObject.class);
         Type bankListType = new TypeToken<List<Bank>>() {}.getType();
