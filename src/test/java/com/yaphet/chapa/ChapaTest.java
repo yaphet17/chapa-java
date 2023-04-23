@@ -3,6 +3,7 @@ package com.yaphet.chapa;
 import com.google.gson.Gson;
 import com.yaphet.chapa.client.ChapaClientImpl;
 import com.yaphet.chapa.model.*;
+import com.yaphet.chapa.utility.Util;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -206,7 +207,7 @@ class ChapaTest {
         subAccount = new SubAccount()
                 .setBusinessName("Abebe Suq")
                 .setAccountName("Abebe Bikila")
-                .setAccountName("0123456789")
+                .setAccountNumber("0123456789")
                 .setBankCode("96e41186-29ba-4e30-b013-2ca36d7e7025")
                 .setSplitType(SplitType.PERCENTAGE)
                 .setSplitValue(0.2);
