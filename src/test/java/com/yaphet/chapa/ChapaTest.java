@@ -132,6 +132,24 @@ class ChapaTest {
         JSONAssert.assertEquals(expectedResponse, actualResponse, true);
     }
 
+    @Test
+    public void shouldVerifyTransaction_asResponseData() throws Throwable {
+        // given
+        VerifyResponseData expectedResponseData = new VerifyResponseData()
+                .setMessage("Payment not paid yet")
+                .setStatus("null")
+                .setData(null);
+        String expectedResponse = "{\"data\":null,\"message\":\"Payment not paid yet\",\"status\":\"null\"}";
+
+        // when
+        when(chapaClient.get(anyString(), anyString())).thenReturn(expectedResponse);
+        VerifyResponseData actualResponseData = underTest.verify("test-transaction");
+
+        // then
+        verify(chapaClient).get(anyString(), anyString());
+        JSONAssert.assertEquals(gson.toJson(expectedResponseData), gson.toJson(actualResponseData), false);
+    }
+
 
     @Test
     public void shouldGetListOfBanks() throws Throwable {
@@ -179,6 +197,24 @@ class ChapaTest {
         // then
         verify(chapaClient).post(anyString(), anyString(), anyString());
         JSONAssert.assertEquals(expectedResponse, actualResponse, true);
+    }
+
+    @Test
+    public void shouldCreateSubAccount_asResponseData() throws Throwable {
+        // given
+        SubAccountResponseData expectedResponseData = new SubAccountResponseData()
+                .setMessage("The Bank Code is incorrect please check if it does exist with our getbanks endpoint.")
+                .setStatus("failed")
+                .setData(null);
+        String expectedResponse = "{\"data\":null,\"message\":\"The Bank Code is incorrect please check if it does exist with our getbanks endpoint.\",\"status\":\"failed\"}";
+
+        // when
+        when(chapaClient.post(anyString(), anyMap(), anyString())).thenReturn(expectedResponse);
+        SubAccountResponseData actualResponse = underTest.createSubAccount(subAccount);
+
+        // then
+        verify(chapaClient).post(anyString(), anyMap(), anyString());
+        JSONAssert.assertEquals(gson.toJson(expectedResponseData), gson.toJson(actualResponse), false);
     }
 
 
