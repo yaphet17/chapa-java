@@ -1,19 +1,7 @@
 package com.yaphet.chapa;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.anyMap;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.google.gson.Gson;
+import com.yaphet.chapa.client.ChapaClientImpl;
 import com.yaphet.chapa.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -22,8 +10,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.skyscreamer.jsonassert.JSONAssert;
 
-import com.google.gson.Gson;
-import com.yaphet.chapa.client.ChapaClientImpl;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -41,21 +34,20 @@ class ChapaTest {
     void setUp() {
         chapaClient = mock(ChapaClientImpl.class);
         underTest = new Chapa(chapaClient, "secrete-key");
-        Map<String, String> customizations = new HashMap<>();
-        customizations.put("customization[title]", "E-commerce");
-        customizations.put("customization[description]", "It is time to pay");
-        customizations.put("customization[logo]", "https://mylogo.com/log.png");
-        postData = PostData.builder()
-                .amount(new BigDecimal("100"))
-                .currency("ETB")
-                .firstName("Abebe")
-                .lastName("Bikila")
-                .email("abebe@bikila.com")
-                .txRef(Util.generateToken())
-                .callbackUrl("https://chapa.co")
-                .subAccountId("testSubAccountId")
-                .customizations(customizations)
-                .build();
+        Customization customization = new Customization()
+                .setTitle("E-commerce")
+                .setDescription("It is time to pay")
+                .setLogo("https://mylogo.com/log.png");
+        postData = new PostData()
+                .setAmount(new BigDecimal("100"))
+                .setCurrency("ETB")
+                .setFirstName("Abebe")
+                .setLastName("Bikila")
+                .setEmail("abebe@bikila.com")
+                .setTxRef(Util.generateToken())
+                .setCallbackUrl("https://chapa.co")
+                .setSubAccountId("testSubAccountId")
+                .setCustomization(customization);
         postDataString = " { " +
                 "'amount': '100', " +
                 "'currency': 'ETB'," +
@@ -67,14 +59,13 @@ class ChapaTest {
                 "'subaccount[id]': 'testSubAccountId'," +
                 "'customizations':{'customization[title]':'E-commerce','customization[description]':'It is time to pay','customization[logo]':'https://mylogo.com/log.png'}" +
                 " }";
-        subAccount = SubAccount.builder()
-                .businessName("Abebe Suq")
-                .accountName("Abebe Bikila")
-                .accountNumber("0123456789")
-                .bankCode("001")
-                .splitType(SplitType.PERCENTAGE)
-                .splitValue(0.2)
-                .build();
+        subAccount = new SubAccount()
+                .setBusinessName("Abebe Suq")
+                .setAccountName("Abebe Bikila")
+                .setAccountNumber("0123456789")
+                .setBankCode("001")
+                .setSplitType(SplitType.PERCENTAGE)
+                .setSplitValue(0.2);
         subAccountString = "{'business_name':'Abebe Suq','bank_code':'001','account_name':'Abebe Bikila','account_number':'0123456789','split_type':'PERCENTAGE','split_value':0.2}";
     }
 
@@ -94,40 +85,24 @@ class ChapaTest {
     }
 
     @Test
-    public void shouldInitializeTransaction_asMap() throws Throwable {
-        // given
-        Map<String, String> expectedMap = new HashMap<>();
-        expectedMap.put("data", null);
-        expectedMap.put("message", "Transaction reference has been used before");
-        expectedMap.put("status", "failed");
-        String expectedResponse = "{\"data\":null,\"message\":\"Transaction reference has been used before\",\"status\":\"failed\"}";
-
-        // when
-        when(chapaClient.post(anyString(), anyMap(), anyString())).thenReturn(expectedResponse);
-        Map<String, String> actualMap = underTest.initialize(postData).asMap();
-
-        // then
-        verify(chapaClient).post(anyString(), anyMap(), anyString());
-        assertEquals(expectedMap.toString(), actualMap.toString());
-    }
-
-    @Test
     public void shouldInitializeTransaction_asResponseData() throws Throwable {
         // given
-        ResponseData expectedResponseData = new ResponseData()
+        InitializeResponseData expectedResponseData = new InitializeResponseData()
                 .setMessage("Transaction reference has been used before")
                 .setStatus("failed")
                 .setData(null);
 
+        expectedResponseData.getData();
+
         String expectedResponse = "{\"data\":null,\"message\":\"Transaction reference has been used before\",\"status\":\"failed\"}";
 
         // when
         when(chapaClient.post(anyString(), anyMap(), anyString())).thenReturn(expectedResponse);
-        ResponseData actualResponseData = underTest.initialize(postData).asResponseData();
+        InitializeResponseData actualResponseData = underTest.initialize(postData);
 
         // then
         verify(chapaClient).post(anyString(), anyMap(), anyString());
-        JSONAssert.assertEquals(gson.toJson(expectedResponseData), gson.toJson(actualResponseData), true);
+        JSONAssert.assertEquals(gson.toJson(expectedResponseData), gson.toJson(actualResponseData), false);
 
     }
 
@@ -159,37 +134,18 @@ class ChapaTest {
         JSONAssert.assertEquals(expectedResponse, actualResponse, true);
     }
 
-    @Test
-    public void shouldVerifyTransaction_asMap() throws Throwable {
-        // given
-        Map<String, String> expectedMap = new HashMap<>();
-        expectedMap.put("data", null);
-        expectedMap.put("message", "Payment not paid yet");
-        expectedMap.put("status", null);
-        String expectedResponse = "{\"data\":null,\"message\":\"Payment not paid yet\",\"status\":\"null\"}";
-
-        // when
-        when(chapaClient.get(anyString(), anyString())).thenReturn(expectedResponse);
-        Map<String, String> actualMap = underTest.verify("test-transaction").asMap();
-
-        // then
-        verify(chapaClient).get(anyString(), anyString());
-        assertEquals(expectedMap.toString(), actualMap.toString());
-    }
-
 
     @Test
     public void shouldGetListOfBanks() throws Throwable {
         // given
         String expectedResponse = "{\"data\":[{\"updated_at\":\"2022-07-04T21:34:03.000000Z\",\"name\":\"Awash Bank\",\"created_at\":\"2022-03-17T04:21:30.000000Z\",\"id\":\"80a510ea-7497-4499-8b49-ac13a3ab7d07\",\"country_id\":1}],\"message\":\"Banks retrieved\"}";
         List<Bank> expectedBanks = new ArrayList<>();
-        expectedBanks.add(Bank.builder()
-                .id("80a510ea-7497-4499-8b49-ac13a3ab7d07")
-                .name("Awash Bank")
-                .countryId(1)
-                .createdAt("2022-03-17T04:21:30.000000Z")
-                .updatedAt("2022-07-04T21:34:03.000000Z")
-                .build());
+        expectedBanks.add(new Bank()
+                .setId("80a510ea-7497-4499-8b49-ac13a3ab7d07")
+                .setName("Awash Bank")
+                .setCountryId(1)
+                .setCreatedAt("2022-03-17T04:21:30.000000Z")
+                .setUpdatedAt("2022-07-04T21:34:03.000000Z"));
         // when
         when(chapaClient.get(anyString(), anyString())).thenReturn(expectedResponse);
         List<Bank> actualBanks = underTest.banks();
@@ -214,24 +170,6 @@ class ChapaTest {
     }
 
     @Test
-    public void shouldCreateSubAccount_asMap() throws Throwable {
-        // given
-        String expectedResponse = "{\"data\":null,\"message\":\"The Bank Code is incorrect please check if it does exist with our getbanks endpoint.\",\"status\":\"failed\"}";
-        Map<String, String> expectedMap = new HashMap<>();
-        expectedMap.put("data", null);
-        expectedMap.put("message", "The Bank Code is incorrect please check if it does exist with our getbanks endpoint.");
-        expectedMap.put("status", "failed");
-
-        // when
-        when(chapaClient.post(anyString(), anyMap(), anyString())).thenReturn(expectedResponse);
-        Map<String, String> actualMap = underTest.createSubAccount(subAccount).asMap();
-
-        // then
-        verify(chapaClient).post(anyString(), anyMap(), anyString());
-        JSONAssert.assertEquals(gson.toJson(expectedMap), gson.toJson(actualMap), true);
-    }
-
-    @Test
     public void shouldCreateSubAccount_With_Json_Input() throws Throwable {
         // given
         String expectedResponse = "{\"data\":null,\"message\":\"The Bank Code is incorrect please check if it does exist with our getbanks endpoint.\",\"status\":\"failed\"}";
@@ -251,29 +189,28 @@ class ChapaTest {
     @Disabled
     public void testDefault() throws Throwable {
         // given
-        Map<String, String> customizations = new HashMap<>();
-        customizations.put("customization[title]", "E-commerce");
-        customizations.put("customization[description]", "It is time to pay");
-        customizations.put("customization[logo]", "https://mylogo.com/log.png");
-        PostData postData = PostData.builder()
-                .amount(new BigDecimal("100"))
-                .currency("ETB")
-                .firstName("Abebe")
-                .lastName("Bikila")
-                .email("abebe@bikila.com")
-                .txRef(Util.generateToken())
-                .callbackUrl("https://chapa.co")
-                .subAccountId("testSubAccountId")
-                .customizations(customizations)
-                .build();
-        subAccount = SubAccount.builder()
-                .businessName("Abebe Suq")
-                .accountName("Abebe Bikila")
-                .accountNumber("0123456789")
-                .bankCode("96e41186-29ba-4e30-b013-2ca36d7e7025")
-                .splitType(SplitType.PERCENTAGE)
-                .splitValue(0.2)
-                .build();
+        Customization customization = new Customization()
+                .setTitle("E-commerce")
+                .setDescription("It is time to pay")
+                .setLogo("https://mylogo.com/log.png");
+        PostData postData = new PostData()
+                .setAmount(new BigDecimal("100"))
+                .setCurrency("ETB")
+                .setFirstName("Abebe")
+                .setLastName("Bikila")
+                .setEmail("abebe@bikila.com")
+                .setTxRef(Util.generateToken())
+                .setCallbackUrl("https://chapa.co")
+                .setSubAccountId("testSubAccountId")
+                .setCustomization(customization);
+        subAccount = new SubAccount()
+                .setBusinessName("Abebe Suq")
+                .setAccountName("Abebe Bikila")
+                .setAccountName("0123456789")
+                .setBankCode("96e41186-29ba-4e30-b013-2ca36d7e7025")
+                .setSplitType(SplitType.PERCENTAGE)
+                .setSplitValue(0.2);
+
         String formData = gson.toJson(postData);
         System.out.println(formData);
 

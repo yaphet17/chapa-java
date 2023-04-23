@@ -1,35 +1,73 @@
 package com.yaphet.chapa.model;
 
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotNull;
-
 import com.google.gson.annotations.SerializedName;
 
-import lombok.Builder;
-import lombok.Getter;
-
-@Getter
-@Builder
 public class SubAccount {
 
-    @NotNull(message = "Business name is required")
     @SerializedName("business_name")
     private String businessName;
-    @NotNull(message = "Bank code is required")
     @SerializedName("bank_code")
     private String bankCode;
-    @NotNull(message = "Account name is required")
     @SerializedName("account_name")
     private String accountName;
-    @NotNull(message = "Account number is required")
     @SerializedName("account_number")
     private String accountNumber;
-    @NotNull(message = "Split type is required")
     @SerializedName("split_type")
     private SplitType splitType;
-    @NotNull(message = "Split type is required")
-    @DecimalMin(value = "0.01", message = "Invalid amount")
     @SerializedName("split_value")
     private Double splitValue;
 
+    public String getBusinessName() {
+        return businessName;
+    }
+
+    public SubAccount setBusinessName(String businessName) {
+        this.businessName = businessName;
+        return this;
+    }
+
+    public String getBankCode() {
+        return bankCode;
+    }
+
+    public SubAccount setBankCode(String bankCode) {
+        this.bankCode = bankCode;
+        return this;
+    }
+
+    public String getAccountName() {
+        return accountName;
+    }
+
+    public SubAccount setAccountName(String accountName) {
+        this.accountName = accountName;
+        return this;
+    }
+
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public SubAccount setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
+        return this;
+    }
+
+    public SplitType getSplitType() {
+        return splitType;
+    }
+
+    public SubAccount setSplitType(SplitType splitType) {
+        this.splitType = splitType;
+        return this;
+    }
+
+    public Double getSplitValue() {
+        return splitValue;
+    }
+
+    public SubAccount setSplitValue(Double splitValue) {
+        this.splitValue = splitValue;
+        return this;
+    }
 }
