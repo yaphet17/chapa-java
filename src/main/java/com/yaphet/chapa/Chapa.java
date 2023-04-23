@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The Chapa class is responsible for making GET and POST request to Chapa API
- * to initialize payment and verify transactions.
+ * The <code>Chapa</code> class is responsible for making GET and POST request to Chapa API to initialize
+ * a transaction, verify a transaction and create a sub account.
  */
 public class Chapa {
 
@@ -32,8 +32,7 @@ public class Chapa {
 
     /**
      * @param secreteKey  A secrete key provided from Chapa.
-     * @param chapaClient Implementation of {@link ChapaClient}
-     *                    which is used to make API calls to Chapa.
+     * @param chapaClient Implementation of {@link ChapaClient} interface.
      */
     public Chapa(ChapaClient chapaClient, String secreteKey) {
         this.chapaClient = chapaClient;
@@ -42,9 +41,13 @@ public class Chapa {
 
 
     /**
+     * <p>This method is used to initialize payment in Chapa. It is an overloaded method
+     * of {@link #initialize(String)}.</p><br>
+     *
      * @param postData Object of {@link PostData} instantiated with
      *                 post fields.
-     * @return The current invoking object.
+     * @return An object of {@link InitializeResponseData} containing
+     *          response data from Chapa API.
      * @throws Throwable Throws an exception for failed request to Chapa API.
      */
     public InitializeResponseData initialize(PostData postData) throws Throwable { // TODO: consider creating custom exception handler and wrap any exception thrown by http client
@@ -94,8 +97,12 @@ public class Chapa {
     }
 
     /**
-     * @param jsonData JSON data which contains post fields.
-     * @return The current invoking object.
+     * <p>This method is used to initialize payment in Chapa. It is an overloaded method
+     * of {@link #initialize(PostData)}.</p><br>
+     *
+     * @param jsonData A json string containing post fields.
+     * @return An object of {@link InitializeResponseData} containing
+     *         response data from Chapa API.
      * @throws Throwable Throws an exception for failed request to Chapa API.
      */
 
@@ -111,9 +118,11 @@ public class Chapa {
     }
 
     /**
-     * @param transactionRef Unique transaction reference which was associated
-     *                       with tx_ref field in post data.
-     * @return The current invoking object.
+     * @param transactionRef A transaction reference which was associated
+     *                       with tx_ref field in post data. This field uniquely
+     *                       identifies a transaction.
+     * @return An object of {@link VerifyResponseData} containing
+     *        response data from Chapa API.
      * @throws Throwable Throws an exception for failed request to Chapa API.
      */
     public VerifyResponseData verify(String transactionRef) throws Throwable {
@@ -131,7 +140,7 @@ public class Chapa {
     }
 
     /**
-     * @return List of banks supported by Chapa
+     * @return A list of {@link Bank} containing all banks supported by Chapa.
      * @throws Throwable Throws an exception for failed request to Chapa API.
      */
     public List<Bank> banks() throws Throwable {
@@ -142,9 +151,13 @@ public class Chapa {
     }
 
     /**
-     * @param subAccount Object of {@link SubAccount} instantiated with
-     *                   post fields
-     * @return The current invoking object.
+     * <p>This method is used to create a sub account in Chapa. It is an overloaded method
+     * of {@link #createSubAccount(String)}.</p><br>
+     *
+     * @param subAccount An object of {@link SubAccount} containing
+     *                   sub account details.
+     * @return An object of {@link SubAccountResponseData} containing
+     *        response data from Chapa API.
      * @throws Throwable Throws an exception for failed request to Chapa API.
      */
     public SubAccountResponseData createSubAccount(SubAccount subAccount) throws Throwable {
@@ -166,8 +179,12 @@ public class Chapa {
     }
 
     /**
-     * @param jsonData JSON data which contains post fields.
-     * @return The current invoking object.
+     * <p>This method is used to create a sub account in Chapa. It is an overloaded method
+     * of {@link #createSubAccount(SubAccount)}.</p><br>
+     *
+     * @param jsonData A json string containing sub account details.
+     * @return An object of {@link SubAccountResponseData} containing
+     *       response data from Chapa API.
      * @throws Throwable Throws an exception for failed request to Chapa API.
      */
     public SubAccountResponseData createSubAccount(String jsonData) throws Throwable {
