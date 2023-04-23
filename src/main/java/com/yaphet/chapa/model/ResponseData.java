@@ -1,8 +1,8 @@
 package com.yaphet.chapa.model;
 
 /**
- * The ResponseData class is an object representation of JSON data
- * received from Chapa API.
+ * The <code>ResponseData</code> class is an abstract class that
+ * represents the response data from Chapa API.
  */
 public abstract class ResponseData {
 
