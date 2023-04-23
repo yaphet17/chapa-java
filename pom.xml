@@ -6,7 +6,7 @@
 
     <groupId>io.github.yaphet17</groupId>
     <artifactId>Chapa</artifactId>
-    <version>1.2.1-SNAPSHOT</version>
+    <version>1.2.1</version>
     <packaging>jar</packaging>
 
     <name>Chapa</name>
@@ -34,11 +34,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>2.17.2</version>
-        </dependency>
-        <dependency>
             <groupId>com.mashape.unirest</groupId>
             <artifactId>unirest-java</artifactId>
             <version>1.4.9</version>
@@ -47,27 +42,6 @@
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.8.9</version>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.24</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-            <version>2.0.1.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate.validator</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>6.0.20.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish</groupId>
-            <artifactId>javax.el</artifactId>
-            <version>3.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>

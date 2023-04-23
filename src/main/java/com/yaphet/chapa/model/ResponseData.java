@@ -1,27 +1,24 @@
 package com.yaphet.chapa.model;
 
-import com.google.gson.annotations.SerializedName;
-
 /**
- * The ResponseData class is an object representation of JSON data
- * received from Chapa API.
+ * The <code>ResponseData</code> class is an abstract class that
+ * represents the response data from Chapa API.
  */
-public class ResponseData {
+public abstract class ResponseData {
 
     private String message;
     private String status;
     private int statusCode;
-    private Data data;
+    private String rawJson;
 
     public ResponseData() {
-
     }
 
-    public ResponseData(String message, String status, int statusCode, Data data) {
+    public ResponseData(String rawJson, String message, String status, int statusCode) {
         this.message = message;
         this.status = status;
         this.statusCode = statusCode;
-        this.data = data;
+        this.rawJson = rawJson;
     }
 
     public String getMessage() {
@@ -51,27 +48,20 @@ public class ResponseData {
         return this;
     }
 
-    public Data getData() {
-        return data;
+    public String getRawJson() {
+        return rawJson;
     }
 
-    public ResponseData setData(Data data) {
-        this.data = data;
+    /**
+     * An alias for {@link #getRawJson()}.
+     * @return String representation of the response JSON data.
+     */
+    public String asString() {
+        return rawJson;
+    }
+
+    public ResponseData setRawJson(String rawJson) {
+        this.rawJson = rawJson;
         return this;
-    }
-
-    public static class Data {
-
-        @SerializedName("checkout_url")
-        private String checkOutUrl;
-
-        public String getCheckOutUrl() {
-            return checkOutUrl;
-        }
-
-        public Data setCheckOutUrl(String checkOutUrl) {
-            this.checkOutUrl = checkOutUrl;
-            return this;
-        }
     }
 }

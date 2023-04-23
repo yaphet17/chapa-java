@@ -10,6 +10,13 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.request.body.MultipartBody;
 import com.mashape.unirest.request.body.RequestBodyEntity;
 
+/**
+ * <p>A default implementation of {@link ChapaClient}.</p><br>
+ *
+ * <p>Uses Unirest to make HTTP requests.</p>
+ *
+ * @see <a href="http://kong.github.io/unirest-java/">Unirest</a>
+ */
 public class ChapaClientImpl implements ChapaClient {
 
     private static final String authorizationHeader = HttpHeaders.AUTHORIZATION;
@@ -24,8 +31,10 @@ public class ChapaClientImpl implements ChapaClient {
                 .header(authorizationHeader, "Bearer " + secreteKey)
                 .fields(fields);
 
-        statusCode = request.asJson().getStatus();
-        return request.asJson().getBody().toString();
+        HttpResponse<JsonNode> jsonNodeHttpResponse = request.asJson();
+
+        statusCode = jsonNodeHttpResponse.getStatus();
+        return jsonNodeHttpResponse.getBody().toString();
     }
 
     @Override
@@ -35,8 +44,10 @@ public class ChapaClientImpl implements ChapaClient {
                 .header(authorizationHeader, "Bearer " + secreteKey)
                 .body(body);
 
-        statusCode = request.asJson().getStatus();
-        return request.asJson().getBody().toString();
+        HttpResponse<JsonNode> jsonNodeHttpResponse = request.asJson();
+
+        statusCode = jsonNodeHttpResponse.getStatus();
+        return jsonNodeHttpResponse.getBody().toString();
     }
 
     @Override
