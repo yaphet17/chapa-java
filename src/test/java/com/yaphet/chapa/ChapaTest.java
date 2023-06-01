@@ -222,7 +222,7 @@ class ChapaTest {
 
     // This should not run in the pipeline
     @Test
-//    @Disabled
+    @Disabled
     public void testDefault() throws Throwable {
         // given
         Customization customization = new Customization()
