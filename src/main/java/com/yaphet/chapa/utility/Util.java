@@ -124,4 +124,8 @@ public class Util {
     public static boolean notNullAndEmpty(String value) {
         return value != null && !value.isEmpty();
     }
+
+    public static boolean is2xxSuccessful(int statucCode) {
+        return (statucCode / 100) == 2;
+    }
 }

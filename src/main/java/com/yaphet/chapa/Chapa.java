@@ -2,6 +2,7 @@ package com.yaphet.chapa;
 
 import com.yaphet.chapa.client.ChapaClient;
 import com.yaphet.chapa.client.ChapaClientImpl;
+import com.yaphet.chapa.exception.ChapaException;
 import com.yaphet.chapa.model.*;
 import com.yaphet.chapa.utility.Util;
 
@@ -94,6 +95,10 @@ public class Chapa {
         responseBody = chapaClient.post(BASE_URL + "/transaction/initialize", fields, SECRETE_KEY);
         statusCode = chapaClient.getStatusCode();
 
+        if(!Util.is2xxSuccessful(chapaClient.getStatusCode())) {
+           throw new ChapaException(responseBody);
+        }
+
         InitializeResponseData initializeResponseData = Util.jsonToInitializeResponseData(responseBody)
                 .setRawJson(responseBody)
                 .setStatusCode(statusCode);
@@ -114,6 +119,10 @@ public class Chapa {
     public InitializeResponseData initialize(String jsonData) throws Throwable {
         responseBody = chapaClient.post(BASE_URL + "/transaction/initialize", jsonData, SECRETE_KEY);
         statusCode = chapaClient.getStatusCode();
+
+        if(!Util.is2xxSuccessful(chapaClient.getStatusCode())) {
+            throw new ChapaException(responseBody);
+        }
 
         InitializeResponseData initializeResponseData = Util.jsonToInitializeResponseData(responseBody)
                 .setRawJson(responseBody)
@@ -137,6 +146,10 @@ public class Chapa {
         responseBody = chapaClient.get(BASE_URL + "/transaction/verify/" + transactionRef, SECRETE_KEY);
         statusCode = chapaClient.getStatusCode();
 
+        if(!Util.is2xxSuccessful(chapaClient.getStatusCode())) {
+            throw new ChapaException(responseBody);
+        }
+
         VerifyResponseData verifyResponseData = Util.jsonToVerifyResponseData(responseBody)
                 .setRawJson(responseBody)
                 .setStatusCode(statusCode);
@@ -151,6 +164,10 @@ public class Chapa {
     public List<Bank> banks() throws Throwable {
         responseBody = chapaClient.get(BASE_URL + "/banks", SECRETE_KEY);
         statusCode = chapaClient.getStatusCode();
+
+        if(!Util.is2xxSuccessful(chapaClient.getStatusCode())) {
+            throw new ChapaException(responseBody);
+        }
 
         return Util.extractBanks(responseBody);
     }
@@ -176,6 +193,10 @@ public class Chapa {
         responseBody = chapaClient.post(BASE_URL + "/subaccount", fields, SECRETE_KEY);
         statusCode = chapaClient.getStatusCode();
 
+        if(!Util.is2xxSuccessful(chapaClient.getStatusCode())) {
+            throw new ChapaException(responseBody);
+        }
+
         SubAccountResponseData subAccountResponseData = Util.jsonToSubAccountResponseData(responseBody)
                 .setRawJson(responseBody)
                 .setStatusCode(statusCode);
@@ -195,6 +216,10 @@ public class Chapa {
     public SubAccountResponseData createSubAccount(String jsonData) throws Throwable {
         responseBody = chapaClient.post(BASE_URL + "/subaccount", jsonData, SECRETE_KEY);
         statusCode = chapaClient.getStatusCode();
+
+        if(!Util.is2xxSuccessful(chapaClient.getStatusCode())) {
+            throw new ChapaException(responseBody);
+        }
 
         SubAccountResponseData subAccountResponseData = Util.jsonToSubAccountResponseData(responseBody)
                 .setRawJson(responseBody)
