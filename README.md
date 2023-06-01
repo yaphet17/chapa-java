@@ -36,15 +36,18 @@ Visit official [Chapa's API Documentation](https://developer.chapa.co/docs)
     <dependency>
       <groupId>io.github.yaphet17</groupId>
       <artifactId>Chapa</artifactId>
-      <version>1.1.0</version>
+      <version>1.2.2</version>
     </dependency>
 ```
 Or add the below gradle dependency to your `build.gradle` file.
 ```groovy
-    implementation 'io.github.yaphet17:Chapa:1.1.0'
+    implementation 'io.github.yaphet17:Chapa:1.2.2'
 ```
 
 ## Usage
+
+> **Note** : This doc is not updated with the latest changes of this library (which have several amazing but breaking ): changes). I appreciate any contribution to the docs until I find some time to do it my self.
+
 
 Instantiate a `Chapa` class.
 ```java       
