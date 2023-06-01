@@ -61,6 +61,7 @@ public class Chapa {
 
        Customization customization = postData.getCustomization();
         String callbackUrl = postData.getCallbackUrl();
+        String returnUrl = postData.getReturnUrl();
         String subAccountId = postData.getSubAccountId();
 
         if (Util.notNullAndEmpty(subAccountId)) {
@@ -69,6 +70,10 @@ public class Chapa {
 
         if (Util.notNullAndEmpty(callbackUrl)) {
             fields.put("callback_url", callbackUrl);
+        }
+
+        if (Util.notNullAndEmpty(returnUrl)) {
+            fields.put("return_url", returnUrl);
         }
 
         if (customization != null) {
