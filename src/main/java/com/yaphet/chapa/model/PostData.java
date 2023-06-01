@@ -21,6 +21,8 @@ public class PostData {
     private String txRef;
     @SerializedName("callback_url")
     private String callbackUrl;
+    @SerializedName("return_url")
+    private String returnUrl;
     @SerializedName("subaccounts[id]")
     private String subAccountId;
     private Customization customization;
@@ -85,6 +87,15 @@ public class PostData {
 
     public PostData setCallbackUrl(String callbackUrl) {
         this.callbackUrl = callbackUrl;
+        return this;
+    }
+
+    public String getReturnUrl() {
+        return returnUrl;
+    }
+
+    public PostData setReturnUrl(String returnUrl) {
+        this.returnUrl = returnUrl;
         return this;
     }
 

@@ -47,6 +47,7 @@ class ChapaTest {
                 .setEmail("abebe@bikila.com")
                 .setTxRef(Util.generateToken())
                 .setCallbackUrl("https://chapa.co")
+                .setReturnUrl("https://chapa.co")
                 .setSubAccountId("testSubAccountId")
                 .setCustomization(customization);
         postDataString = " { " +
@@ -57,6 +58,7 @@ class ChapaTest {
                 "'last_name': 'Bikila'," +
                 "'tx_ref': 'tx-myecommerce12345'," +
                 "'callback_url': 'https://chapa.co'," +
+                "'return_url': 'https://chapa.co'," +
                 "'subaccount[id]': 'testSubAccountId'," +
                 "'customizations':{'customization[title]':'E-commerce','customization[description]':'It is time to pay','customization[logo]':'https://mylogo.com/log.png'}" +
                 " }";
@@ -220,7 +222,7 @@ class ChapaTest {
 
     // This should not run in the pipeline
     @Test
-    @Disabled
+//    @Disabled
     public void testDefault() throws Throwable {
         // given
         Customization customization = new Customization()
@@ -232,9 +234,10 @@ class ChapaTest {
                 .setCurrency("ETB")
                 .setFirstName("Abebe")
                 .setLastName("Bikila")
-                .setEmail("abebe@bikila.com")
+                .setEmail("abebe@bikila")
                 .setTxRef(Util.generateToken())
                 .setCallbackUrl("https://chapa.co")
+                .setReturnUrl("https://chapa.co")
                 .setSubAccountId("testSubAccountId")
                 .setCustomization(customization);
         subAccount = new SubAccount()

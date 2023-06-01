@@ -1,4 +1,5 @@
 com.yaphet.chapa
 com.yaphet.chapa.client
+com.yaphet.chapa.exception
 com.yaphet.chapa.model
 com.yaphet.chapa.utility
