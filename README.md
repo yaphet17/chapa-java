@@ -24,9 +24,10 @@ Unofficial Java package for Chapa Payment Gateway.
 1. [Documentation](#documentation)
 2. [Installation](#installation)
 3. [Usage](#usage)
-4. [Contribution](#contribution)
-5. [Example](#example)
-6. [License](#license)
+4. [Javadoc](https://yaphet17.github.io/chapa-java/)
+5. [Contribution](#contribution)
+6. [Example](#example)
+7. [License](#license)
 
 ## Documentation
 Visit official [Chapa's API Documentation](https://developer.chapa.co/docs)
@@ -46,7 +47,7 @@ Or add the below gradle dependency to your `build.gradle` file.
 
 ## Usage
 
-> **Note** : This doc is not updated with the latest changes of this library (which have several amazing but breaking ): changes). I appreciate any contribution to the docs until I find some time to do it my self.
+> **Note** : This doc is not updated with the latest changes of this library (which have several amazing but breaking ): changes). I appreciate any contribution to the docs until I find some time to do it my self. Until then you can refer the [Javadoc](https://yaphet17.github.io/chapa-java/).
 
 
 Instantiate a `Chapa` class.
