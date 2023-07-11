@@ -6,15 +6,15 @@
  `-----' `--' `--'  `--`--' |  |-'   `--`--'          `-----'   `--`--'    `--'     `--`--'
 ```
 
-[![BUILD](https://github.com/yaphet17/chapa-java/actions/workflows/maven.yml/badge.svg)](https://github.com/yaphet17/chapa-java/actions/workflows/maven.yml/) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
+[![BUILD](https://github.com/yaphet17/chapa-java/actions/workflows/maven.yml/badge.svg)](https://github.com/yaphet17/chapa-java/actions/workflows/maven.yml/) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.yaphet17/Chapa/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.yaphet17/Chapa) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
 
-Unofficial Java package for Chapa Payment Gateway.
+Unofficial Java SDK for Chapa Payment Gateway.
 
 ## What's new in this version
-- You no longer need to deal with `JSON` or `Map` responses. You can just treat response data as a Java object.
+- You no longer need to deal with `JSON` or `Map<String, Object>` responses. You can just treat response data as a Java object using specific response classes for each request type (e.g. payment initialization, payment verification).
 - Better exception handling. The SDK will throw the newly added `ChapaException` on failed requests to Chapa API.
 - Bug fixes and design improvements.
-- Well-tested and documented code. Check out the published [Javadoc](https://yaphet17.github.io/chapa-java/) here. 
+- Well-tested and documented code. Check out the Javadoc [here](https://yaphet17.github.io/chapa-java/). 
 
 ## Table of Contents
 1. [Documentation](#documentation)
@@ -135,7 +135,7 @@ String subAccount = " { " +
 Create subaccount
 ```java
 SubAccountResponseData subAccountResponseData = chapa.createSubAccount(subAccount);
-// Get SubAccount id from  
+// Get SubAccount id from the response JSOn
 System.out.println(subAccountResponseData.getData().getSubAccountId());
 ```
 ## Example
@@ -152,6 +152,7 @@ import io.github.yaphet17.chapa.SplitType;
 import io.github.yaphet17.chapa.Bank;
 
 public class ChapaExample {
+
     public static void main(String[] args) {
       Chapa chapa = new Chapa("your-secrete-key");
     
@@ -180,22 +181,18 @@ public class ChapaExample {
                 .setSplitType(SplitType.PERCENTAGE)
                 .setSplitValue(0.2);
 
-      // list of banks
-      List<Bank> banks = chapa.banks();
-      banks.forEach(bank -> System.out.println("Bank name: " + bank.getName() + " Bank Code: " + bank.getId()));
-      // create subaccount
-      System.out.println("Create SubAccount response: " + chapa.createSubAccount(subAccount).asString());
-      // initialize payment
-      System.out.println("Initialize response: " + chapa.initialize(postData).asString());
-      // verify payment
-      System.out.println("Verify response: " + chapa.verify(postData.getTxRef()).asString());
+       
+       InitializeResponseData responseData = chapa.initialize(postData);
+       VerifyResponseData verifyResponseData = chapa.verify("tx-myecommerce12345");
+       SubAccountResponseData subAccountResponseData = chapa.createSubAccount(subAccount);
+
       }
  }
 ```
 ## Contribution
-If you find any bug or have any suggestion, please feel free to open an issue or pull request.
+If you find any bugs or have any suggestions, please feel free to open an issue or pull request.
 
 ## License
-This open source library is licensed under the terms of the MIT License.
+This open-source library is licensed under the terms of the MIT License.
 
 Enjoy!
