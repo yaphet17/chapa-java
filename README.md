@@ -6,19 +6,15 @@
  `-----' `--' `--'  `--`--' |  |-'   `--`--'          `-----'   `--`--'    `--'     `--`--'
 ```
 
-[![BUILD](https://github.com/yaphet17/chapa-java/actions/workflows/maven.yml/badge.svg)](https://github.com/yaphet17/chapa-java/actions/workflows/maven.yml/) [![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/yaphet17/chapa-java.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/yaphet17/chapa-java/context:java) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
+[![BUILD](https://github.com/yaphet17/chapa-java/actions/workflows/maven.yml/badge.svg)](https://github.com/yaphet17/chapa-java/actions/workflows/maven.yml/) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.yaphet17/Chapa/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.yaphet17/Chapa) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
 
-Unofficial Java package for Chapa Payment Gateway.
+Unofficial Java SDK for Chapa Payment Gateway.
 
 ## What's new in this version
-- You can now implement `ChapaClient` interface and create your own custom implementation
-  to use your favorite HTTP client.
-- Includes split payment feature added by Chapa. You can now get list of supported banks, create
-  subaccount and perform a split payment. See [Split Payment](https://developer.chapa.co/docs/split-payment/) documentation for more details.
-- Additional utility methods to help you to generate a convenient token for your transactions, to map json string
-  to `PostData` object etc.
+- You no longer need to deal with `JSON` or `Map<String, Object>` responses. You can just treat response data as a Java object using specific response classes for each request type (e.g. payment initialization, payment verification).
+- Better exception handling. The SDK will throw the newly added `ChapaException` on failed requests to Chapa API.
 - Bug fixes and design improvements.
-- Well tested and documented code.
+- Well-tested and documented code. Check out the Javadoc [here](https://yaphet17.github.io/chapa-java/). 
 
 ## Table of Contents
 1. [Documentation](#documentation)
@@ -47,9 +43,6 @@ Or add the below gradle dependency to your `build.gradle` file.
 
 ## Usage
 
-> **Note** : This doc is not updated with the latest changes of this library (which have several amazing but breaking ): changes). I appreciate any contribution to the docs until I find some time to do it my self. Until then you can refer the [Javadoc](https://yaphet17.github.io/chapa-java/).
-
-
 Instantiate a `Chapa` class.
 ```java       
 Chapa chapa = new Chapa("your-secrete-key");
@@ -60,26 +53,26 @@ Chapa chapa = new Chapa("your-secrete-key", new MyCustomChapaClient());
 ```
 Note: `MyCustomChapaClient` must implement `ChapaClient` interface.
 
-To initialize transaction, you can specify your information by either using our `PostData` class.
+To initialize a transaction, you can specify your information by either using our `PostData` class.
 
 Note: Starting from version 1.1.0 you have to specify customization fields as a `Map<String, String>` object.
 
 ```java
-Map<String, String> customizations = new HashMap<>();
-customizations.put("customization[title]", "E-commerce");
-customizations.put("customization[description]", "It is time to pay");
-customizations.put("customization[logo]", "https://mylogo.com/log.png");
-PostData postData = PostData.builder()
-        .amount(new BigDecimal("100"))
-        .currency("ETB")
-        .firstName("Abebe")
-        .lastName("Bikila")
-        .email("abebe@bikila.com")
-        .txRef(Util.generateToken())
-        .callbackUrl("https://chapa.co")
-        .subAccountId("ACCT_xxxxxxxxx")
-        .customizations(customizations)
-        .build();
+Customization customization = new Customization()
+    .setTitle("E-commerce")
+    .setDescription("It is time to pay")
+    .setLogo("https://mylogo.com/log.png");
+PostData postData = new PostData()
+    .setAmount(new BigDecimal("100"))
+    .setCurrency("ETB")
+    .setFirstName("Abebe")
+    .setLastName("Bikila")
+    .setEmail("abebe@bikila")
+    .setTxRef(Util.generateToken())
+    .setCallbackUrl("https://chapa.co")
+    .setReturnUrl("https://chapa.co")
+    .setSubAccountId("testSubAccountId")
+    .setCustomization(customization);
 ```
 Or, you can use a string JSON data.
 ```java 
@@ -99,30 +92,34 @@ String formData = " { " +
         "   }" +
         " }";
 ```
-Intitialize payment
+Initialize payment
 ```java
-String reponseString = chapa.initialize(formData).asString(); // get response in a string JSON format
-Map<String, String> responseMap = chapa.initialize(formData).asMap(); // get response as a Map object 
+InitializeResponseData responseData = chapa.initialize(postData);
+// Get the response message
+System.out.println(responseData.getMessage());
+// Get the checkout URL from the response JSON
+System.out.println(responseData.getData().getCheckOutUrl());
+// Get the raw response JSON
+System.out.println(responseData.getRawJson());
 ```
 Verify payment
 ```java
-String reponseString = chapa.verify("tx-myecommerce12345").asString(); // get response in a string JSON format
-Map<String, String> responseMap = chapa.verify("tx-myecommerce12345").asMap(); // get response as a Map object 
+// Get the verification response data
+VerifyResponseData verifyResponseData = chapa.verify("tx-myecommerce12345");
 ```
-Get list of banks
+Get the list of banks
 ```java
 List<Bank> banks = chapa.getBanks();
 ```
 To create a subaccount, you can specify your information by either using our `Subaccount` class.
 ```java
-SubAccount subAccount = SubAccount.builder()
-        .businessName("Abebe Suq")
-        .accountName("Abebe Bikila")
-        .accountNumber("0123456789")
-        .bankCode("96e41186-29ba-4e30-b013-2ca36d7e7025")
-        .splitType(SplitType.PERCENTAGE) // or SplitType.FLAT
-        .splitValue(0.2)
-        .build();
+SubAccount subAccount = new SubAccount()
+                .setBusinessName("Abebe Suq")
+                .setAccountName("Abebe Bikila")
+                .setAccountNumber("0123456789")
+                .setBankCode("96e41186-29ba-4e30-b013-2ca36d7e7025")
+                .setSplitType(SplitType.PERCENTAGE)
+                .setSplitValue(0.2);
 ```
 Or, you can use a string JSON data.
 ```java
@@ -137,8 +134,9 @@ String subAccount = " { " +
 ```
 Create subaccount
 ```java
-String reponseString = chapa.createSubAccount(subAccount).asString(); // get response in a string JSON format
-Map<String, String> responseMap = chapa.createSubAccount(subAccount).asMap(); // get response as a Map object 
+SubAccountResponseData subAccountResponseData = chapa.createSubAccount(subAccount);
+// Get SubAccount id from the response JSOn
+System.out.println(subAccountResponseData.getData().getSubAccountId());
 ```
 ## Example
 ```java
@@ -154,50 +152,47 @@ import io.github.yaphet17.chapa.SplitType;
 import io.github.yaphet17.chapa.Bank;
 
 public class ChapaExample {
+
     public static void main(String[] args) {
       Chapa chapa = new Chapa("your-secrete-key");
     
-      Map<String, String> customizations = new HashMap<>();
-      customizations.put("customization[title]", "E-commerce");
-      customizations.put("customization[description]", "It is time to pay");
-      customizations.put("customization[logo]", "https://mylogo.com/log.png");
-      PostData postData = PostData.builder()
-              .amount(new BigDecimal("100"))
-              .currency("ETB")
-              .firstName("Abebe")
-              .lastName("Bikila")
-              .email("abebe@bikila.com")
-              .txRef(Util.generateToken())
-              .callbackUrl("https://chapa.co")
-              .subAccountId("ACCT_xxxxxxxxx")
-              .customizations(customizations)
-              .build();
-      
-      SubAccount subAccount = SubAccount.builder()
-              .businessName("Abebe Suq")
-              .accountName("Abebe Bikila")
-              .accountNumber("0123456789")
-              .bankCode("96e41186-29ba-4e30-b013-2ca36d7e7025")
-              .splitType(SplitType.PERCENTAGE) // or SplitType.FLAT
-              .splitValue(0.2)
-              .build();
+      Customization customization = new Customization()
+                .setTitle("E-commerce")
+                .setDescription("It is time to pay")
+                .setLogo("https://mylogo.com/log.png");
 
-      // list of banks
-      List<Bank> banks = chapa.banks();
-      banks.forEach(bank -> System.out.println("Bank name: " + bank.getName() + " Bank Code: " + bank.getId()));
-      // create subaccount
-      System.out.println("Create SubAccount response: " + chapa.createSubAccount(subAccount).asString());
-      // initialize payment
-      System.out.println("Initialize response: " + chapa.initialize(postData).asString());
-      // verify payment
-      System.out.println("Verify response: " + chapa.verify(postData.getTxRef()).asString());
+      PostData postData = new PostData()
+                .setAmount(new BigDecimal("100"))
+                .setCurrency("ETB")
+                .setFirstName("Abebe")
+                .setLastName("Bikila")
+                .setEmail("abebe@bikila")
+                .setTxRef(Util.generateToken())
+                .setCallbackUrl("https://chapa.co")
+                .setReturnUrl("https://chapa.co")
+                .setSubAccountId("testSubAccountId")
+                .setCustomization(customization);
+      
+      SubAccount subAccount = new SubAccount()
+                .setBusinessName("Abebe Suq")
+                .setAccountName("Abebe Bikila")
+                .setAccountNumber("0123456789")
+                .setBankCode("96e41186-29ba-4e30-b013-2ca36d7e7025")
+                .setSplitType(SplitType.PERCENTAGE)
+                .setSplitValue(0.2);
+
+       
+       InitializeResponseData responseData = chapa.initialize(postData);
+       VerifyResponseData verifyResponseData = chapa.verify("tx-myecommerce12345");
+       SubAccountResponseData subAccountResponseData = chapa.createSubAccount(subAccount);
+
       }
  }
 ```
 ## Contribution
-If you find any bug or have any suggestion, please feel free to open an issue or pull request.
+If you find any bugs or have any suggestions, please feel free to open an issue or pull request.
 
 ## License
-This open source library is licensed under the terms of the MIT License.
+This open-source library is licensed under the terms of the MIT License.
 
 Enjoy!
