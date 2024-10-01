@@ -67,7 +67,7 @@ public class ChapaClientImpl implements ChapaClient {
     }
 
     @Override
-    public int getStatus() {
+    public Integer getStatus() {
         return 0;
     }
 }

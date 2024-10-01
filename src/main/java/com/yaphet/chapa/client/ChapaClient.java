@@ -18,5 +18,5 @@ public interface ChapaClient {
 
     int getStatusCode();
 
-    int getStatus();
+    Integer getStatus();
 }
