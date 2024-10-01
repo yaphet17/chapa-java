@@ -17,4 +17,6 @@ public interface ChapaClient {
     String get(String url, String secreteKey) throws Throwable;
 
     int getStatusCode();
+
+    int getStatus();
 }
