@@ -6,7 +6,7 @@
  `-----' `--' `--'  `--`--' |  |-'   `--`--'          `-----'   `--`--'    `--'     `--`--'
 ```
 
-[![BUILD](https://github.com/yaphet17/chapa-java/actions/workflows/maven.yml/badge.svg)](https://github.com/yaphet17/chapa-java/actions/workflows/maven.yml/) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.yaphet17/Chapa/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.yaphet17/Chapa) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
+[![BUILD](https://github.com/yaphet17/chapa-java/actions/workflows/maven.yml/badge.svg?branch=main)](https://github.com/yaphet17/chapa-java/actions/workflows/maven.yml/) [![Maven Central](https://img.shields.io/maven-central/v/io.github.yaphet17/Chapa)](https://central.sonatype.com/artifact/io.github.yaphet17/Chapa) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
 
 Unofficial Java SDK for Chapa Payment Gateway.
 
