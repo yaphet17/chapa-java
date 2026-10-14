@@ -1,6 +1,8 @@
 name: Java CI with Maven
 
-on: push
+on:
+  push:
+  workflow_dispatch:
  
 jobs:
   build:
@@ -23,7 +25,7 @@ jobs:
 #        VALIDATE_ALL_CODEBASE: false
 #        DEFAULT_BRANCH: main
 #        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v4
       if: failure()
       with:
         name: build-reports
