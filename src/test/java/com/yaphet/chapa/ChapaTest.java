@@ -79,8 +79,7 @@ class ChapaTest {
         String expectedResponse = "{\"data\":{\"checkout_url\":\"https://checkout.chapa.co/checkout/payment/somestring\"},\"message\":\"Hosted Link\",\"status\":\"success\"}";
 
         // when
-        when(chapaClient.post(anyString(), anyMap(), anyString())).thenReturn(expectedResponse);
-        when(chapaClient.getStatusCode()).thenReturn(200);
+        setupChapaClientImplGetStatusCodeAndPostStubs(expectedResponse);
         String actualResponse = underTest.initialize(postData).asString();
 
         // then
@@ -100,8 +99,7 @@ class ChapaTest {
         String expectedResponse = "{\"data\":{\"checkout_url\":\"https://checkout.chapa.co/checkout/payment/somestring\"},\"message\":\"Transaction reference has been used before\",\"status\":\"failed\"}";
 
         // when
-        when(chapaClient.post(anyString(), anyMap(), anyString())).thenReturn(expectedResponse);
-        when(chapaClient.getStatusCode()).thenReturn(200);
+        setupChapaClientImplGetStatusCodeAndPostStubs(expectedResponse);
         InitializeResponseData actualResponseData = underTest.initialize(postData);
 
         // then
@@ -115,8 +113,7 @@ class ChapaTest {
         String expectedResponse = "{\"data\":{\"checkout_url\":\"https://checkout.chapa.co/checkout/payment/somestring\"},\"message\":\"Hosted Link\",\"status\":\"success\"}";
 
         // when
-        when(chapaClient.post(anyString(), anyString(), anyString())).thenReturn(expectedResponse);
-        when(chapaClient.getStatusCode()).thenReturn(200);
+        setupChapaClientImplGetStatusCodeAndPostStubs2(expectedResponse);
         String actualResponse = underTest.initialize(postDataString).asString();
 
         // then
@@ -130,8 +127,7 @@ class ChapaTest {
         String expectedResponse = "{\"data\":null,\"message\":\"Payment not paid yet\",\"status\":\"null\"}";
 
         // when
-        when(chapaClient.get(anyString(), anyString())).thenReturn(expectedResponse);
-        when(chapaClient.getStatusCode()).thenReturn(200);
+        setupChapaClientImplGetStatusCodeAndGetStubs(expectedResponse);
         String actualResponse = underTest.verify("test-transaction").asString();
 
         // then
@@ -150,8 +146,7 @@ class ChapaTest {
         String expectedResponse = "{\"data\":null,\"message\":\"Payment not paid yet\",\"status\":\"null\"}";
 
         // when
-        when(chapaClient.get(anyString(), anyString())).thenReturn(expectedResponse);
-        when(chapaClient.getStatusCode()).thenReturn(200);
+        setupChapaClientImplGetStatusCodeAndGetStubs(expectedResponse);
         VerifyResponseData actualResponseData = underTest.verify("test-transaction");
 
         // then
@@ -172,8 +167,7 @@ class ChapaTest {
                 .setCreatedAt("2022-03-17T04:21:30.000000Z")
                 .setUpdatedAt("2022-07-04T21:34:03.000000Z"));
         // when
-        when(chapaClient.get(anyString(), anyString())).thenReturn(expectedResponse);
-        when(chapaClient.getStatusCode()).thenReturn(200);
+        setupChapaClientImplGetStatusCodeAndGetStubs(expectedResponse);
         List<Bank> actualBanks = underTest.banks();
 
         // then
@@ -187,8 +181,7 @@ class ChapaTest {
         String expectedResponse = "{\"data\":null,\"message\":\"The Bank Code is incorrect please check if it does exist with our getbanks endpoint.\",\"status\":\"failed\"}";
 
         // when
-        when(chapaClient.post(anyString(), anyMap(), anyString())).thenReturn(expectedResponse);
-        when(chapaClient.getStatusCode()).thenReturn(200);
+        setupChapaClientImplGetStatusCodeAndPostStubs(expectedResponse);
         String actualResponse = underTest.createSubAccount(subAccount).asString();
 
         // then
@@ -202,8 +195,7 @@ class ChapaTest {
         String expectedResponse = "{\"data\":null,\"message\":\"The Bank Code is incorrect please check if it does exist with our getbanks endpoint.\",\"status\":\"failed\"}";
 
         // when
-        when(chapaClient.post(anyString(), anyString(), anyString())).thenReturn(expectedResponse);
-        when(chapaClient.getStatusCode()).thenReturn(200);
+        setupChapaClientImplGetStatusCodeAndPostStubs2(expectedResponse);
         String actualResponse = underTest.createSubAccount(subAccountString).asString();
 
         // then
@@ -222,8 +214,7 @@ class ChapaTest {
         String expectedResponse = "{\"data\":null,\"message\":\"The Bank Code is incorrect please check if it does exist with our getbanks endpoint.\",\"status\":\"failed\"}";
 
         // when
-        when(chapaClient.post(anyString(), anyMap(), anyString())).thenReturn(expectedResponse);
-        when(chapaClient.getStatusCode()).thenReturn(200);
+        setupChapaClientImplGetStatusCodeAndPostStubs(expectedResponse);
         SubAccountResponseData actualResponse = underTest.createSubAccount(subAccount);
 
         // then
@@ -272,4 +263,18 @@ class ChapaTest {
         System.out.println("Verify response: " + chapa.verify(postData.getTxRef()).asString());
     }
 
+    private void setupChapaClientImplGetStatusCodeAndPostStubs(String expectedResponse) throws Throwable {
+        when(chapaClient.post(anyString(), anyMap(), anyString())).thenReturn(expectedResponse);
+        when(chapaClient.getStatusCode()).thenReturn(200);
+    }
+
+    private void setupChapaClientImplGetStatusCodeAndGetStubs(String expectedResponse) throws Throwable {
+        when(chapaClient.get(anyString(), anyString())).thenReturn(expectedResponse);
+        when(chapaClient.getStatusCode()).thenReturn(200);
+    }
+
+    private void setupChapaClientImplGetStatusCodeAndPostStubs2(String expectedResponse) throws Throwable {
+        when(chapaClient.post(anyString(), anyString(), anyString())).thenReturn(expectedResponse);
+        when(chapaClient.getStatusCode()).thenReturn(200);
+    }
 }
